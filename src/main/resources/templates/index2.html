@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf入门</title>
+</head>
+<body>
+    <span th:text="Hello"></span>
+    <hr/>
+    <span th:text="${msg}"></span>
+    <hr/>
+    <!-- 给input赋值-->
+    <input type = "text" name="userName" th:value="${msg}">
+    <hr/>
+    <!--判断是否为空-->
+    <span th:text="${#strings.isEmpty(msg)}"></span>
+    <hr/>
+    <!--判断是否有子串-->
+    <span th:text="${#strings.contains(msg,'9')}"></span>
+    <hr/>
+    <span th:text="${#strings.startsWith(msg,'T')}"></span>
+    <hr/>
+    <span th:text="${#strings.endsWith(msg,'h')}"></span>
+    <hr/>
+    <span th:text="${#strings.length(msg)}"></span>
+    <hr/>
+    <span th:text="${#strings.indexOf(msg,'h')}"></span>
+    <hr/>
+    <span th:text="${#strings.substring(msg,13)}"></span>
+    <hr/>
+    <span th:text="${#strings.substring(msg,10,13)}"></span>
+    <hr/>
+    <span th:text="${#strings.toUpperCase(msg)}"></span>
+    <hr/>
+    <span th:text="${#strings.toLowerCase(msg)}"></span>
+
+
+
+</body>
+</html>
