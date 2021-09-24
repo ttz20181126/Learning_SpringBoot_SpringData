@@ -1,6 +1,6 @@
-package com.learn.view.controller;
+package com.learn.springboot.controller;
 
-import com.learn.view.pojo.User;
+import com.learn.springboot.pojo.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

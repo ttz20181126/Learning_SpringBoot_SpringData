@@ -1,2 +1,2 @@
-# springboot_study_practice
-springboot学习案例练手
+# springBoot_start_with_lesson
+springboot入门教程

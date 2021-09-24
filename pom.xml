@@ -9,17 +9,23 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.learn</groupId>
-    <artifactId>view</artifactId>
+    <artifactId>springBoot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>view</name>
+    <name>start-with-lesson</name>
     <description>Demo project for Spring Boot</description>
 
+    <!--springboot2.0以下的版本，jdk使用1.7 -->
     <properties>
         <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
-        <!--spring-boot启动器-->
+        <!--
+          spring-boot启动器: 一些jar包的集合，springboot一共提供了44个启动器
+          spring-boot-starter-web支持全栈式web开发，包括了tomcat和springmvc等jar
+          spring-boot-starter-jdbc支持spring以jdbc方式操作数据库的jar的集合
+          spring-boot-starter-redis支持redis键值存储的数据库操作。
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -48,6 +54,7 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
+        <!--thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>

@@ -1,4 +1,4 @@
-package com.learn.view.pojo;
+package com.learn.springboot.pojo;
 
 /***
  * @ClassName User
