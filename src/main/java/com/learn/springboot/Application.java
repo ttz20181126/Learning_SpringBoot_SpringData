@@ -18,24 +18,12 @@ import javax.servlet.Servlet;
  * @Jdk 1.8
  ***/
 @SpringBootApplication
-@ServletComponentScan  //在springboot启动时会扫描@WebServlet
+@ServletComponentScan  //在springboot启动时会扫描@WebServlet 、 @WebFilter
 public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
-
-    /**
-     * 替代@WebServlet(name = "SecondServlet",urlPatterns = "/secondServlet")
-     * @return
-     */
-    @Bean
-    public ServletRegistrationBean getServletRegistrationBean(){
-        ServletRegistrationBean<Servlet> bean = new ServletRegistrationBean<>(new SecondServlet());
-        bean.addUrlMappings("/secondServlet");
-        return bean;
-
-    }
 
 }
