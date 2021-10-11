@@ -24,7 +24,7 @@ public class Application2 {
      * @return
      */
     @Bean
-    public ServletRegistrationBean getServletRegistrationBean(){
+    public ServletRegistrationBean<Servlet> getServletRegistrationBean(){
         ServletRegistrationBean<Servlet> bean = new ServletRegistrationBean<>(new SecondServlet());
         System.out.println("~~~~注册servlet~~~");
         bean.addUrlMappings("/secondServlet");
@@ -40,7 +40,7 @@ public class Application2 {
      * @return
      */
     @Bean
-    public FilterRegistrationBean getFilterRegistrationBean(){
+    public FilterRegistrationBean<Filter> getFilterRegistrationBean(){
         FilterRegistrationBean<Filter> bean = new FilterRegistrationBean<>(new SecondFilter());
         //bean.addUrlPatterns(new String[]{"*.do","*.jsp"});
         System.out.println("~~~~注册filter~~~");
@@ -57,7 +57,7 @@ public class Application2 {
      * @return
      */
     @Bean
-    public ServletListenerRegistrationBean getListenRegistrationBean(){
+    public ServletListenerRegistrationBean<SecondListener> getListenRegistrationBean(){
         ServletListenerRegistrationBean<SecondListener> bean = new ServletListenerRegistrationBean<SecondListener>(new SecondListener());
         return bean;
     }
