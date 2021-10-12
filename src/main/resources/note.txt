@@ -1,0 +1,14 @@
+Note：
+
+一、springboot访问静态资源
+1.springboot从classpath/static的目录（目录名称必须是static）
+   http://localhost:8080/girl.jpg
+   http://localhost:8080/index.html
+   http://localhost:8080/img/girl.jpg
+2.ServletContext根目录下
+  在src/main下创建webapp目录
+  在webapp目录下如同static目录防止静态资源一样。
+  http://localhost:8080/girl2.jpg
+  http://localhost:8080/index2.html
+  http://localhost:8080/img/girl2.jpg
+
