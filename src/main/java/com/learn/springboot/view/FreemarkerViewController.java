@@ -17,7 +17,8 @@ public class FreemarkerViewController {
      * @return
      */
     @RequestMapping("/userList")
-    public String userList(Model model) {
+    public String userList(Model model,Integer id,String name) {
+        System.out.println("id = " + id + ",name = " + name);
         List<User> list = new ArrayList<>();
         list.add(new User(1, 12, "zhangsan"));
         list.add(new User(2, 14, "mazi"));

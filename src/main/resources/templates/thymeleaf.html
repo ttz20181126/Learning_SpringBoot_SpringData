@@ -1,43 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--在thymeleaf3.0版本下,对标签校验较为严谨,下面的mata标签有开始没有结束，就会报错,pom中升级版本,就可以避免-->
     <meta charset="UTF-8">
     <title>Thymeleaf入门</title>
 </head>
-<body>
+
     <span>hello springboot thymeleaf</span>
     <hr>
 
-   <!-- thymeleaf的增强语法-->
-    <span th:text="Hello"></span>
-    <hr/>
-    <span th:text="${msg}"></span>
-    <hr/>
-    <!-- 给input赋值-->
-    <input type = "text" name="userName" th:value="${msg}">
-    <hr/>
-    <!--判断是否为空-->
-    <span th:text="${#strings.isEmpty(msg)}"></span>
-    <hr/>
-    <!--判断是否有子串-->
-    <span th:text="${#strings.contains(msg,'9')}"></span>
-    <hr/>
-    <span th:text="${#strings.startsWith(msg,'T')}"></span>
-    <hr/>
-    <span th:text="${#strings.endsWith(msg,'h')}"></span>
-    <hr/>
-    <span th:text="${#strings.length(msg)}"></span>
-    <hr/>
-    <span th:text="${#strings.indexOf(msg,'h')}"></span>
-    <hr/>
-    <span th:text="${#strings.substring(msg,13)}"></span>
-    <hr/>
-    <span th:text="${#strings.substring(msg,10,13)}"></span>
-    <hr/>
-    <span th:text="${#strings.toUpperCase(msg)}"></span>
-    <hr/>
-    <span th:text="${#strings.toLowerCase(msg)}"></span>
+    <!--thymeleaf的增强语法-->
 
+        <!--th:text在页面中输出值-->
+        <span th:text="Hello"></span>
+        <hr/>
+        <span th:text="${msg}"></span>
+        <hr/>
+
+        <!--th:value可以将一个值放入到input标签的value中-->
+        <input type = "text" name="userName" th:value="${msg}">
+        <hr/>
+
+        <!--thymeleaf对字符串的操作-->
+        <!-- ${#strings.函数(参数)} 调用了thymeleaf的内置对象,调用内置对象前面一定加#,大部分内置对象以s结尾,还有其他内置对象numbers、dates-->
+        <span th:text="${#strings.isEmpty(msg)}"></span>
+        <hr/>
+        <span th:text="${#strings.contains(msg,'9')}"></span>
+        <hr/>
+        <span th:text="${#strings.startsWith(msg,'T')}"></span>
+        <hr/>
+        <span th:text="${#strings.endsWith(msg,'h')}"></span>
+        <hr/>
+        <span th:text="${#strings.length(msg)}"></span>
+        <hr/>
+        <span th:text="${#strings.indexOf(msg,'h')}"></span>
+        <hr/>
+        <span th:text="${#strings.substring(msg,13)}"></span>
+        <hr/>
+        <span th:text="${#strings.substring(msg,10,13)}"></span>
+        <hr/>
+        <span th:text="${#strings.toUpperCase(msg)}"></span>
+        <hr/>
+        <span th:text="${#strings.toLowerCase(msg)}"></span>
+        <hr/>
+
+
+         <!--thymeleaf对日期的操作-->
+         <span th:text="${#dates.format(key)}"></span><hr/> <!-- 默认按照浏览器设置的语言、日期格式转化-->
+         <span th:text="${#dates.format(key,'yyyy/MM/dd')}"></span><hr/>
+         <span th:text="${#dates.year(key)}"></span><hr/>
+         <span th:text="${#dates.month(key)}"></span><hr/>
+         <span th:text="${#dates.day(key)}"></span><hr/>
+
+
+         <!--thymeleaf对条件判断的操作-->
+         <span th:if = "${sex} == '男'">
+             性别:男
+         </span>
+         <span th:if = "${sex} == '女'">
+             性别:女
+         </span>
+         <hr/>
+         <div th:switch=" ${id}">
+             <span th:case="1">ID为1</span>
+             <span th:case="2">ID为2</span>
+             <span th:case="3">ID为3</span>
+         </div>
+         <hr/>
+
+
+        <!--thymeleaf迭代遍历的操作-->
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>当前迭代对象的索引从0开始</th>
+                <th>当前迭代对象的计数器从1开始</th>
+                <th>被迭代对象的大小</th>
+                <th>当前循环次数是否是奇数</th>
+                <th>当前循环次数是否是偶数</th>
+                <th>当前迭代对象是否是第一个</th>
+                <th>当前迭代对象是否是最后一个</th>
+            </tr>
+            <tr th:each="u,var:${list}">
+                <td th:text="${u.userId}"></td>
+                <td th:text="${u.userName}"></td>
+                <td th:text="${u.userAge}"></td>
+                <td th:text="${var.index}"></td>
+                <td th:text="${var.count}"></td>
+                <td th:text="${var.size}"></td>
+                <td th:text="${var.even}"></td>
+                <td th:text="${var.odd}"></td>
+                <td th:text="${var.first}"></td>
+                <td th:text="${var.last}"></td>
+
+            </tr>
+        </table>
+        <hr/>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+            </tr>
+            <tr th:each="maps:${map}"> <!--maps:u1=com..@7SFS8,u2=com....@48fs-->
+                <!--<td th:each="entry:${maps}" th:text="${entry.key}"></td>-->
+                <td th:each="entry:${maps}" th:text="${entry.value.userId}"></td>
+                <td th:each="entry:${maps}" th:text="${entry.value.userName}"></td>
+                <td th:each="entry:${maps}" th:text="${entry.value.userAge}"></td>
+            </tr>
+        </table>
+        <hr/>
+
+        <!--thymeleaf获取作用域数据-->
+        Request:<span th:text="${#httpServletRequest.getAttribute('req')}"></span><br/>
+        Session:<span th:text="${session.sess}"></span><br/>
+        Application:<span th:text="${application.app}"></span><br/>
+
+        <!--thymeleaf之URL表达式-->
+        <a th:href="@{http://www.baidu.com}">绝对路径-one</a><hr/>
+        <a href="http://www.baidu.com">绝对路径-two</a><hr/>
+        <a th:href="@{/userList}">相对路径-相对于当前项目的根-相对于项目的上下文的相对路径</a><hr/>
+        <a th:href="@{~/project2/resourceName}">相对路径-相对于服务器的根</a><hr/>
+        <a th:href="@{/userList(id=1,name=baby)}">URL传参</a><hr/>
+        <a th:href="@{/user/{id}/getUser(id=1,name=baby)}">rest风格传参</a><hr/>
+
+
+    <!--thymeleaf的增强语法-->
 
 
 </body>
