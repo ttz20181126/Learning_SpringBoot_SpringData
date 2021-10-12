@@ -12,6 +12,18 @@ Note：
   http://localhost:8080/index2.html
   http://localhost:8080/img/girl2.jpg
 
+二、springboot上传文件
+有默认上传文件大小，可以在配置文件中修改。
+
+三、整合视图层技术
+1.整合jsp
+pom中添加jstl、jasper依赖。
+配置视图解析器
+创建controller
+
+2.整合freemarker
+springboot要求模板形式的视图层技术的文件必须要放到src/main/resources目录下必须有一个名为templates的目录。
+
 
 
 

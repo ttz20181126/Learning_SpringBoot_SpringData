@@ -1,9 +1,10 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>展示用户信息</title>
+		<title>展示用户信息-freemarker页面</title>
 	</head>
 	<body>
+	    <h2>展示用户信息-freemarker页面</h2>
 		<table border="1" align="center" width="50%">
 			<tr>
 				<th>Id</th>
