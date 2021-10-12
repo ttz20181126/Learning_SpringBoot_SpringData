@@ -17,12 +17,20 @@ Note：
 
 三、整合视图层技术
 1.整合jsp
-pom中添加jstl、jasper依赖。
-配置视图解析器
-创建controller
+pom中添加jstl、jasper依赖;
+配置视图解析器;
+创建controller.
 
 2.整合freemarker
 springboot要求模板形式的视图层技术的文件必须要放到src/main/resources目录下必须有一个名为templates的目录。
+
+3.整合thymeleaf
+目录src/main/resources下templates;
+templates说明:该目录是安全的，不允许外界直接访问，必须是controller跳转。因为要做数据渲染。webapp下、classpath下的static文件夹下的静态资源非安全的;
+thymeleaf是通过他特定的语法对html标记做渲染;
+
+
+
 
 
 

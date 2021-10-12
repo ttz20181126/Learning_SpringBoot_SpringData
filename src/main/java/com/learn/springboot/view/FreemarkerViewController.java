@@ -22,6 +22,6 @@ public class FreemarkerViewController {
         list.add(new User(1, 12, "zhangsan"));
         list.add(new User(2, 14, "mazi"));
         model.addAttribute("userList", list);
-        return "userList";
+        return "freemarker";
     }
 }
