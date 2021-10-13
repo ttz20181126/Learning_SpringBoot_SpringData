@@ -2,7 +2,6 @@ package com.learn.springboot.view;
 
 
 import com.learn.springboot.pojo.User;
-import oracle.jrockit.jfr.events.RequestableEventEnvironment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;

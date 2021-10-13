@@ -30,6 +30,8 @@ templates说明:该目录是安全的，不允许外界直接访问，必须是c
 thymeleaf是通过他特定的语法对html标记做渲染;
 thymeleaf3.0以下的版本,对标签校验较严,参看thymeleaf.html中的说明;
 
+4.集成mybaits
+集成中，一定注意pom中要把mapper的xml打包到target中。
 
 
 
