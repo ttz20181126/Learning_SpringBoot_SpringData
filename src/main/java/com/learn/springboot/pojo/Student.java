@@ -1,11 +1,25 @@
 package com.learn.springboot.pojo;
 
+import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class Student {
 
-
     private Integer id;
+
+    //非空校验。使用了hibernate-validator框架。
+    @NotBlank(message = "用户名不能为空（默认值是：不能为空）")
+    @Length(min=2,max = 6,message = "最小长度为2,最大长度为6")
     private String name;
+
+    @NotNull
+    @Min(value = 12)
     private Integer age;
+
+    //@Email(regexp = "")
+    //private String email;
 
 
     public Integer getId() {

@@ -46,6 +46,25 @@ thymeleaf3.0以下的版本,对标签校验较严,参看thymeleaf.html中的说�
         </resources>
     </build>
 
+5.springboot的数据校验
+springboot的数据验证使用了Hibernate-validate校验框架
+  可以看到导入的jar文件中有一个hibernate-validator。
+  在校验属性上加@NotBlank等注解形式。
+  controller中添加@Valid注解开启对象的数据校验
+
+  Q:el表达式，有就有，没有值就没有值，thymeleaf的th:errors如果没有会报错、
+  localhost:8080/students/add_student访问会报错了。
+  A：解决方法是在跳转页面的方法中注入一个Student对象。
+     由于springmvc会将该对象放入到Model对象中传递，key的名称会使用对象的驼峰式的命名规则来作为key，
+     参数的变量名需要与对象的名称相同，将首字母小写。如果使用其他名称，可以使用@ModelAndAttribute注解.
+     使用@ModelAndAttribute该名称了，等提交的时候校验如果不合法，又是返回到添加界面，所以添加的方法也要使用这个注解取同名。
+
+  @NotBlank 判断字符串是否为null或者空串(去除首尾空格)
+  @NotEmpty  判断字符串是否为null或者空串；
+  @Length 判断字符的长度（最大或者最小）
+  @min  @max  判断数值最大最小值。
+  @Email判断邮箱是否合法。  @Email(regexp = "")可以添加更加详细的检验格式。
+
 
 
 

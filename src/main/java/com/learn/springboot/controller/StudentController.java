@@ -6,9 +6,12 @@ import com.learn.springboot.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -24,15 +27,26 @@ public class StudentController {
      * 添加学生
      * localhost:8080/students/add_student
      * @param page
+     * @param students 避免页面th：errors的报错
      * @return
      */
     @RequestMapping("/{page}")
-    public String showPage(@PathVariable String page){
+    public String showPage(@PathVariable String page,@ModelAttribute("student") Student students){
         return page;
     }
 
+    /**
+     * @Valid开启对象的数据校验
+     * BindingResult  封装了校验结果
+     * @param student
+     * @return
+     */
     @RequestMapping("/addStudent")
-    public String addStudent(Student student){
+    public String addStudent(@Valid @ModelAttribute("student")Student student,BindingResult result){
+        //校验失败
+        if(result.hasErrors()){
+            return "add_student";
+        }
         this.studentService.addStudent(student);
         return "ok";
     }

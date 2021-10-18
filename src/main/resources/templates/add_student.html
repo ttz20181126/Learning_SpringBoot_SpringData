@@ -8,8 +8,11 @@
 
     <!-- <form th:action="@{/students/addStudent}" method="post">-->
     <form action="/students/addStudent" method="post">
-        用户姓名：<input type="text" name="name"/><br/>
-        用户年龄：<input type="text" name="age"/><br/>
+        用户姓名：<input type="text" name="name"/>
+        <!--spring的驼峰命名，自动将驼峰对象，返回给model的attribute-->
+        <font color="red" th:errors="${student.name}"></font><br/>
+        用户年龄：<input type="text" name="age"/>
+        <font color="red" th:errors="${student.age}"></font><br/>
         <input type="submit" value="确定">
 
     </form>
