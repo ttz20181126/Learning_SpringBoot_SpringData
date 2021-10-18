@@ -4,8 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.learn.springboot.mapper.StudentMapper">
-    <!--配置了别名的，在pojo类中，直接student就行[pojo实体类首字母小写]-->
-    <insert id="insertStudent" parameterType="student">
+    <!--配置文件中使用mybatis.type-aliases-package
+    配置了别名的，在pojo类中，直接student就行[pojo实体类首字母小写或者直接类名]
+    不用加完全限定名-->
+    <insert id="insertStudent" parameterType="Student">
         insert into student(name,age) value(#{name},#{age})
     </insert>
+
+    <select id="selectStudentAll" resultType="student">
+        select * from student
+    </select>
 </mapper>

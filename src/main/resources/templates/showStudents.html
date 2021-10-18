@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>展示学生数据</title>
+</head>
+<body>
+
+    <table border="1" style="width: 300px;">
+        <tr>
+            <th>学生ID</th>
+            <th>学生姓名</th>
+            <th>学生年龄</th>
+        </tr>
+        <tr th:each="stu : ${list}">
+            <td th:text="${stu.id}"></td>
+            <td th:text="${stu.name}"></td>
+            <td th:text="${stu.age}"></td>
+        </tr>
+    </table>
+
+</body>
+</html>
