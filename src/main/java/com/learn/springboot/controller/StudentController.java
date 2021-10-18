@@ -51,7 +51,12 @@ public class StudentController {
         return "showStudents";
     }
 
-
+    /**
+     * 修改学生信息回显
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/findStudentById")
     public String findStudentById(Integer id,Model model){
         Student stu = this.studentService.findById(id);
@@ -59,4 +64,14 @@ public class StudentController {
         return "updateStudent";
     }
 
+    /**
+     * 修改学生信息
+     * @param student
+     * @return
+     */
+    @RequestMapping("/editStudent")
+    public String editStudent(Student student){
+        studentService.updateStudent(student);
+        return "ok";
+    }
 }

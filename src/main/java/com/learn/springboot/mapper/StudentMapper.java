@@ -12,4 +12,6 @@ public interface StudentMapper {
     List<Student> selectStudentAll();
 
     Student selectStudentById(Integer id);
+
+    void updateStudent(Student student);
 }

@@ -31,4 +31,9 @@ public class StudentServiceImpl implements StudentService {
     public Student findById(Integer id) {
         return this.studentMapper.selectStudentById(id);
     }
+
+    @Override
+    public void updateStudent(Student student) {
+        this.studentMapper.updateStudent(student);
+    }
 }

@@ -19,4 +19,8 @@
     <select id="selectStudentById" resultType="student">
         select * from student where id = #{id}
     </select>
+
+    <update id="updateStudent" parameterType="student">
+        update student set name= #{name},age = #{age} where id = #{id}
+    </update>
 </mapper>
