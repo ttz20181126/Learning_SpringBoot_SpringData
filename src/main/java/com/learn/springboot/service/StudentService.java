@@ -22,4 +22,6 @@ public interface StudentService {
     Student findById(Integer id);
 
     void updateStudent(Student student);
+
+    void deleteStudentById(Integer id);
 }

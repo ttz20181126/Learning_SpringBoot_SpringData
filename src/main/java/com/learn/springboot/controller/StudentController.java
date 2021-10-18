@@ -74,4 +74,16 @@ public class StudentController {
         studentService.updateStudent(student);
         return "ok";
     }
+
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    @RequestMapping("/delStudent")
+    public String delStudent(Integer id){
+        this.studentService.deleteStudentById(id);
+        //删除用户后重定向查询列表
+        return "redirect:/students/findStudentAll";
+    }
 }

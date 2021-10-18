@@ -15,7 +15,6 @@
         select * from student
     </select>
 
-    <!--select * from student where id = #{value}-->
     <select id="selectStudentById" resultType="student">
         select * from student where id = #{id}
     </select>
@@ -23,4 +22,8 @@
     <update id="updateStudent" parameterType="student">
         update student set name= #{name},age = #{age} where id = #{id}
     </update>
+
+    <delete id="deleteStudentById">
+        delete from student where id = #{value}
+    </delete>
 </mapper>
