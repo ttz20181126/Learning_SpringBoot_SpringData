@@ -14,4 +14,9 @@
     <select id="selectStudentAll" resultType="student">
         select * from student
     </select>
+
+    <!--select * from student where id = #{value}-->
+    <select id="selectStudentById" resultType="student">
+        select * from student where id = #{id}
+    </select>
 </mapper>

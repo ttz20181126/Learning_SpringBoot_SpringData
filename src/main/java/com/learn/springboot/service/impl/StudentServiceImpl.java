@@ -26,4 +26,9 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> findStudentAll() {
         return this.studentMapper.selectStudentAll();
     }
+
+    @Override
+    public Student findById(Integer id) {
+        return this.studentMapper.selectStudentById(id);
+    }
 }

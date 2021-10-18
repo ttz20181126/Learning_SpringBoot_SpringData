@@ -52,4 +52,11 @@ public class StudentController {
     }
 
 
+    @RequestMapping("/findStudentById")
+    public String findStudentById(Integer id,Model model){
+        Student stu = this.studentService.findById(id);
+        model.addAttribute("stu",stu);
+        return "updateStudent";
+    }
+
 }

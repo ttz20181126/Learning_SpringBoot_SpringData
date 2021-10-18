@@ -10,4 +10,6 @@ public interface StudentMapper {
 
 
     List<Student> selectStudentAll();
+
+    Student selectStudentById(Integer id);
 }

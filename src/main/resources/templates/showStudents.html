@@ -11,11 +11,15 @@
             <th>学生ID</th>
             <th>学生姓名</th>
             <th>学生年龄</th>
+            <th>操作</th>
         </tr>
         <tr th:each="stu : ${list}">
             <td th:text="${stu.id}"></td>
             <td th:text="${stu.name}"></td>
             <td th:text="${stu.age}"></td>
+            <td>
+                <a th:href="@{/students/findStudentById(id=${stu.id})}">更新用户</a>
+            </td>
         </tr>
     </table>
 

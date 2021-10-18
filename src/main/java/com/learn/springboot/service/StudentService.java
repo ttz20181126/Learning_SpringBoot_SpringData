@@ -17,4 +17,7 @@ public interface StudentService {
      * @return
      */
     List<Student> findStudentAll();
+
+
+    Student findById(Integer id);
 }

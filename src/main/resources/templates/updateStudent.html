@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改学生信息</title>
+</head>
+<body>
+    <form th:action="@{/students/editStudent}" method="post">
+        <input type="hidden" name="id" th:field="${stu.id}">
+        学生姓名:<input type="text" name="name" th:field="${stu.name}">
+        学生年龄:<input type="text" name="age" th:field="${stu.age}">
+        <input type="submit" value="确定">
+    </form>
+
+</body>
+</html>
