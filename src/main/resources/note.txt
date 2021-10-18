@@ -67,6 +67,18 @@ springboot的数据验证使用了Hibernate-validate校验框架
 
 
 
+6.springboot中异常处理方式
+6.1 自定义错误页面
+    SpringBoot默认的处理异常的机制，springboot默认的已经提供了一套处理异常的机制，一旦程序中出现了异常springboot会向/error
+的url发送请求，在springboot中提供了一个叫BasicExceptionController来处理/error请求，然后跳转到默认显示异常的页面来展示异常信息。
+    需要将所有异常统一跳转到自定义的错误页面，需要在src/main/resources/templates创建error.html页面【注意：名称必须叫error】
+    但是这种颗粒度比较粗，所有的错误都跳转到一个页面。
+
+6.2 @ExceptionHandle注解处理异常
+6.3 @ControllerAdvice + @ExceptionHandle注解处理异常
+6.4 配置SimpleMappingExceptionResolver处理异常
+6.5 自定义HandlerExceptionResolver。
+
 
 
 
