@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * springboot处理异常方式一：自定义错误页面。
+ * springboot处理异常方式二：@ExceptionHandle注解处理异常。
  */
 public class ExceptionController {
 
