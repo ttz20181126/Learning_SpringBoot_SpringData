@@ -79,7 +79,7 @@ springboot的数据验证使用了Hibernate-validate校验框架
 
 6.2 @ExceptionHandle注解处理异常  
 ~~~
-@ExceptionHandler(value = {java.lang.ArithmeticException.class})
+@ExceptionHandler(value = {java.lang.NullPointerException.class})
 public ModelAndView nullExceptionHandler(Exception e){
         ModelAndView mv = new  ModelAndView();
         mv.addObject("error",e.toString());
@@ -88,9 +88,15 @@ public ModelAndView nullExceptionHandler(Exception e){
  }
  //必须返回ModelAndView根据异常类型跳转对应页面。
 ~~~
-    
-    
-6.3 @ControllerAdvice + @ExceptionHandle注解处理异常
+     
+6.3 @ControllerAdvice + @ExceptionHandle注解处理异常  
+但是6.2的处理只针对当前controller的异常类有用。另外一个controller如果空指针异常仍然跳转到error.html，不是error_null.html.  
+
+
+
+
+
+
 6.4 配置SimpleMappingExceptionResolver处理异常
 6.5 自定义HandlerExceptionResolver。
 
