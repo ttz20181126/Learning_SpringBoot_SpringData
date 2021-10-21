@@ -8,7 +8,7 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import java.util.Properties;
 
 @Configuration
-public class ResolverException {
+public class SimpleMappingExceptionResolverExceptionController{
 
     /**
      * 访问 http://localhost:8080/defaultExceptionPage3

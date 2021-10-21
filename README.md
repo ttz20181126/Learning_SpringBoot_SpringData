@@ -114,6 +114,25 @@ public class ResolverException {
 ~~~
 但是这个处理方式，无法给视图放回异常信息，6.3可以。  
 
-6.5 自定义HandlerExceptionResolver。
+6.5 自定义HandlerExceptionResolver。  
+上述6.4简化了处理方式，但是不能返回异常信息给视图，  
+~~~
+@Configuration
+public class HandlerExceptionResolverController implements HandlerExceptionResolver {
 
+    @Override
+    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception ex) {
+        ModelAndView mv = new ModelAndView();
+        if(ex instanceof ArithmeticException){
+            mv.setViewName("error_conf_arithmetic");
+        }
+        if(ex instanceof NullPointerException){
+            mv.setViewName("error_conf_null");
+        }
+        mv.addObject("errorMessage", ex.toString());
+        return mv;
+    }
+}
+~~~
 
+7

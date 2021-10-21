@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-//TODO 为了验证ResolverException类中的SimpleMappingExceptionResolver暂时注释掉。
+//TODO 为了验证SimpleMappingExceptionResolverExceptionController类中的SimpleMappingExceptionResolver暂时注释掉。
 //@ControllerAdvice
 public class GlobalException {
 
