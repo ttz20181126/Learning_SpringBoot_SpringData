@@ -135,4 +135,51 @@ public class HandlerExceptionResolverController implements HandlerExceptionResol
 }
 ~~~
 
-7
+7 springboot热部署  
+7.1 SpringLoader  
+7.1.1 SpringLoader方式一  
+pom中添加插件：
+~~~
+<plugins>
+    <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>springloaded</artifactId>
+                <version>1.2.5.RELEASE</version>
+            </dependency>
+        </dependencies>
+    </plugin>
+ </plugins>
+~~~
+此时要插件工作，不能简单的启动启动类，需要使用命令：spring-boot:run.
+注意：这种方式只能热部署java代码，但是对前端页面无能为力。  
+      在此重启运行，会报端口抢占。因为热部署程序在系统后台以进程的形式进行。  
+      需要打开任务管理器，关闭java.exe的进程，然后才可以重启。  
+
+ 7.1.2 SpringLoader方式二（在项目中使用jar包的形式）  
+ 将SpringLoader的jar放在项目的lib包下，方式一需要以命令方式启动，这里:  
+ 启动方式选择run configuration,设定启动参数vm arguments:
+ ~~~
+-javaagent:\lib\springloaded-1.2.5.RELEASE.jar -noverify
+~~~
+这种再启动就不会像方式一存在端口抢占的问题。
+
+7.2 DevTools  
+SpringLoader与DevTools的区别：  
+   SpringLoader 在部署项目时使用的是热部署的方式，DevTools采用的是重新部署的方式。  
+导入依赖：  
+~~~
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    &lt;!&ndash;其他项目依赖这个项目，不向下传递&ndash;&gt;
+    <optional>true</optional>
+</dependency>
+~~~
+修改代码，可以看到控制台会自动重新启动，这就是在重新部署，  
+和springloader的热部署就不同，因为重新部署所以对页面也是有用的。  
+
+8.springboot
