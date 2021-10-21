@@ -24,4 +24,7 @@ public interface StudentService {
     void updateStudent(Student student);
 
     void deleteStudentById(Integer id);
+
+
+    void springBootTestInsert();
 }

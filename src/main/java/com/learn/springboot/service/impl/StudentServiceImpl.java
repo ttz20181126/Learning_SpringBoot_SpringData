@@ -17,6 +17,9 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private StudentDaoImpl studentDao;
+
     @Override
     public void addStudent(Student student) {
         this.studentMapper.insertStudent(student);
@@ -40,5 +43,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudentById(Integer id) {
         this.studentMapper.deleteStudentById(id);
+    }
+
+    @Override
+    public void springBootTestInsert() {
+        this.studentDao.insertStu();
     }
 }
