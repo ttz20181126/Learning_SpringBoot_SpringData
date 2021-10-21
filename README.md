@@ -87,16 +87,33 @@ public ModelAndView nullExceptionHandler(Exception e){
         return mv;
  }
  //必须返回ModelAndView根据异常类型跳转对应页面。
+
+@ExceptionHandler(value = {java.lang.ArithmeticException.class})
+public ModelAndView arithmeticExceptionHandler(Exception e){}
 ~~~
      
 6.3 @ControllerAdvice + @ExceptionHandle注解处理异常  
 但是6.2的处理只针对当前controller的异常类有用。另外一个controller如果空指针异常仍然跳转到error.html，不是error_null.html.  
+在类上将@Controller注解改为@ControllerAdvice则可针对全局做异常处理。  
 
+6.4 配置SimpleMappingExceptionResolver处理异常  
+对6.3的简化，6.3的处理上，需要对每一种异常编写对应的一个异常处理方式，  
+6.4则将异常类和视图建立一个异常处理信息集合。一个方法搞定。
+~~~
+@Configuration
+public class ResolverException {
+    @Bean
+    public SimpleMappingExceptionResolver getSimpleMappingExceptionResolver(){
+            SimpleMappingExceptionResolver smer = new SimpleMappingExceptionResolver();
+            Properties mappings = new Properties();
+            mappings.put("java.lang.NullPointerException","error_conf_null");
+            mappings.put("java.lang.ArithmeticException","error_conf_arithmetic");
+            smer.setExceptionMappings(mappings);
+            return smer;
+    }
+~~~
+但是这个处理方式，无法给视图放回异常信息，6.3可以。  
 
-
-
-
-
-6.4 配置SimpleMappingExceptionResolver处理异常
 6.5 自定义HandlerExceptionResolver。
+
 

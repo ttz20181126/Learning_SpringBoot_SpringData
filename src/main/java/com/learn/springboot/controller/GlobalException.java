@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-@ControllerAdvice
+//TODO 为了验证ResolverException类中的SimpleMappingExceptionResolver暂时注释掉。
+//@ControllerAdvice
 public class GlobalException {
 
     @ExceptionHandler(value = {java.lang.NullPointerException.class})
