@@ -7,6 +7,6 @@ public class StudentDaoImpl {
 
 
     public void insertStu(){
-        System.out.println("insert into student value()");
+        System.out.println("insert into student() value()");
     }
 }

@@ -182,4 +182,10 @@ SpringLoader与DevTools的区别：
 修改代码，可以看到控制台会自动重新启动，这就是在重新部署，  
 和springloader的热部署就不同，因为重新部署所以对页面也是有用的。  
 
-8.springboot
+8.springboot整合spring data jpa.  
+8.1 spring data JPA介绍  
+    spring data就是spring提供的操作数据的框架。spring data JPA只是spring data框架下的基于JPA标准操作数据的模块，简化是持久层的代码。  
+8.2 spring data jpa搭建  
+    引入依赖，修改配置文件，StudentJpa.class使用@Table @Id等注解，建立映射。ApplicationTests.class测试类中测试。  
+8.3    
+    

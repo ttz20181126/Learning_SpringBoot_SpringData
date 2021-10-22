@@ -1,6 +1,9 @@
 package com.learn.springboot;
 
+import com.learn.springboot.pojo.StudentJpa;
+import com.learn.springboot.service.StudentJpaRepository;
 import com.learn.springboot.service.StudentService;
+import net.bytebuddy.asm.Advice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +32,26 @@ public class ApplicationTests {
     @Autowired
     private StudentService studentService;
 
+
+    @Autowired
+    private StudentJpaRepository studentJpaRepository;
+
     @Test
     public void contextLoads() {
         studentService.springBootTestInsert();
+    }
+
+    /**
+     * 逆向生成表，并打印sql
+     * Hibernate: insert into t_users (address, age, name) values (?, ?, ?)
+     */
+    @Test
+    public void testSpringDataJpa() {
+        StudentJpa studentJpa = new StudentJpa();
+        studentJpa.setAddress("北京是朝阳区");
+        studentJpa.setAge(11);
+        studentJpa.setName("张三");
+        studentJpaRepository.save(studentJpa);
     }
 
 }
