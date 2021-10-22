@@ -184,8 +184,19 @@ SpringLoader与DevTools的区别：
 
 8.springboot整合spring data jpa.  
 8.1 spring data JPA介绍  
-    spring data就是spring提供的操作数据的框架。spring data JPA只是spring data框架下的基于JPA标准操作数据的模块，简化是持久层的代码。  
+    spring data就是spring提供的操作数据的框架。spring data JPA只是spring data框架下的基于JPA标准操作数据的模块，简化持久层的代码。  
+
 8.2 spring data jpa搭建  
     引入依赖，修改配置文件，StudentJpa.class使用@Table @Id等注解，建立映射。ApplicationTests.class测试类中测试。  
-8.3    
+
+8.3 spring data jpa提供的核心接口  
+Repository接口  
+    提供了基于方法名称命名的查询方式;提供了基于@Query注解查询与更新.  
+    详情见:StudentJpaRepositoryByName.class与ApplicationTests.class.testJpaRepositoryByMethodName();
+CrudRepository接口  
+PagingAndSortingRepository接口  
+JpaRepository接口  
+JPASpecificationExecutor接口
+  
+   
     

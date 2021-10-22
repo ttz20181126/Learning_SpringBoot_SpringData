@@ -2,6 +2,7 @@ package com.learn.springboot;
 
 import com.learn.springboot.pojo.StudentJpa;
 import com.learn.springboot.service.StudentJpaRepository;
+import com.learn.springboot.service.StudentJpaRepositoryByName;
 import com.learn.springboot.service.StudentService;
 import net.bytebuddy.asm.Advice;
 import org.junit.Test;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 /**
  * springboot测试类
@@ -36,6 +39,9 @@ public class ApplicationTests {
     @Autowired
     private StudentJpaRepository studentJpaRepository;
 
+    @Autowired
+    private StudentJpaRepositoryByName studentJpaRepositoryByName;
+
     @Test
     public void contextLoads() {
         studentService.springBootTestInsert();
@@ -50,8 +56,48 @@ public class ApplicationTests {
         StudentJpa studentJpa = new StudentJpa();
         studentJpa.setAddress("北京是朝阳区");
         studentJpa.setAge(11);
-        studentJpa.setName("张三");
+        studentJpa.setName("李四");
         studentJpaRepository.save(studentJpa);
+    }
+
+
+    /**
+     * Repository方法名称命令测试
+     */
+    @Test
+    public void testJpaRepositoryByMethodName(){
+        List<StudentJpa> list = studentJpaRepositoryByName.findByName("张三");
+        for(StudentJpa s : list){
+            System.out.println("list:"+ s);
+        }
+
+        List<StudentJpa> list2 = studentJpaRepositoryByName.findByNameAndAge("张三",4);
+        for(StudentJpa s : list2){
+            System.out.println("list2:"+ s);
+        }
+        if(list2.size() == 0){
+            System.out.println("list2 为 null");
+        }
+
+
+
+        List<StudentJpa> list3 = studentJpaRepositoryByName.findByNameOrAge("李四",5);
+        for(StudentJpa s : list3){
+            System.out.println("list3:"+ s);
+        }
+        if(list3.size() == 0){
+            System.out.println("lsit3 为 null");
+        }
+
+
+        List<StudentJpa> list4 = studentJpaRepositoryByName.findByNameLike("张%");
+        for(StudentJpa s : list4){
+            System.out.println("list4:"+ s);
+        }
+
+
+
+
     }
 
 }

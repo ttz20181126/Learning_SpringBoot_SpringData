@@ -4,7 +4,7 @@ package com.learn.springboot.pojo;
 import javax.persistence.*;
 
 @Entity
-@Table(name="t_users")
+@Table(name="t_students")
 public class StudentJpa {
 
     @Id
