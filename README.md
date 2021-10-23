@@ -192,8 +192,12 @@ SpringLoader与DevTools的区别：
 8.3 spring data jpa提供的核心接口  
 Repository接口  
     提供了基于方法名称命名的查询方式;提供了基于@Query注解查询与更新.  
-    详情见:StudentJpaRepositoryByName.class与ApplicationTests.class.testJpaRepositoryByMethodName();
+    详情见:StudentJpaRepositoryByName.class与ApplicationTests.class.testJpaRepositoryByMethodName();  
+    详情见:StudentJpaRepositoryQueryAnnotation与ApplicationTests.testQueryAnnotation();  
 CrudRepository接口  
+     CrudRepository接口继承了Repository接口。
+     详情见StudentJpaCrudRepository & ApplicationTests.testJpaCrudRepository();
+
 PagingAndSortingRepository接口  
 JpaRepository接口  
 JPASpecificationExecutor接口

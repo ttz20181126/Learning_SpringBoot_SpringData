@@ -5,6 +5,7 @@ import com.learn.springboot.service.StudentJpaRepository;
 import com.learn.springboot.service.StudentJpaRepositoryByName;
 import com.learn.springboot.service.StudentJpaRepositoryQueryAnnotation;
 import com.learn.springboot.service.StudentService;
+import com.learn.springboot.service.impl.StudentJpaCrudRepository;
 import net.bytebuddy.asm.Advice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * springboot测试类
@@ -47,6 +49,10 @@ public class ApplicationTests {
 
     @Autowired
     private StudentJpaRepositoryQueryAnnotation studentJpaRepositoryQueryAnnotation;
+
+
+    @Autowired
+    private StudentJpaCrudRepository studentJpaCrudRepository;
 
     @Test
     public void contextLoads() {
@@ -127,5 +133,28 @@ public class ApplicationTests {
 
     }
 
+    /**
+     * CrudRepository接口测试
+     */
+    @Test
+    public void testJpaCrudRepository(){
+        StudentJpa studentJpa = new StudentJpa();
+        studentJpa.setAddress("北京是朝阳区");
+        studentJpa.setAge(11);
+        studentJpa.setName("么么哒c");
+        studentJpaCrudRepository.save(studentJpa);
+
+        //save也是更新也是保存
+        StudentJpa studentJpa2 = new StudentJpa();
+        studentJpa2.setId(3);
+        studentJpa2.setAddress("北京是朝阳区");
+        studentJpa2.setAge(11);
+        studentJpa2.setName("么么哒a");
+        studentJpaCrudRepository.save(studentJpa2);
+
+        //Optional<StudentJpa> byId = studentJpaCrudRepository.findById(4);
+        //Iterable<StudentJpa> all = studentJpaCrudRepository.findAll();
+        //studentJpaCrudRepository.deleteById(4);
+    }
 
 }
