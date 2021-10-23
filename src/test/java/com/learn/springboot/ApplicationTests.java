@@ -3,15 +3,18 @@ package com.learn.springboot;
 import com.learn.springboot.pojo.StudentJpa;
 import com.learn.springboot.service.StudentJpaRepository;
 import com.learn.springboot.service.StudentJpaRepositoryByName;
+import com.learn.springboot.service.StudentJpaRepositoryQueryAnnotation;
 import com.learn.springboot.service.StudentService;
 import net.bytebuddy.asm.Advice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,6 +45,9 @@ public class ApplicationTests {
     @Autowired
     private StudentJpaRepositoryByName studentJpaRepositoryByName;
 
+    @Autowired
+    private StudentJpaRepositoryQueryAnnotation studentJpaRepositoryQueryAnnotation;
+
     @Test
     public void contextLoads() {
         studentService.springBootTestInsert();
@@ -62,7 +68,7 @@ public class ApplicationTests {
 
 
     /**
-     * Repository方法名称命令测试
+     * Repository方法名称命名测试
      */
     @Test
     public void testJpaRepositoryByMethodName(){
@@ -94,10 +100,32 @@ public class ApplicationTests {
         for(StudentJpa s : list4){
             System.out.println("list4:"+ s);
         }
+    }
 
+    /**
+     * Repository接口的@Query测试
+     *
+     * @Query 只支持查询，需要update语句，要加上@Modifying
+     *
+     * update必须在事务中，需要@Transactional注解，但是@Transactional和@Test在一起会事务回滚，需要@Rollback注解
+     */
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void testQueryAnnotation(){
+        List<StudentJpa> list = studentJpaRepositoryQueryAnnotation.queryByNameUseHQL("张三");
+        for(StudentJpa studentJpa : list){
+            System.out.println(studentJpa);
+        }
 
+        List<StudentJpa> list2 = studentJpaRepositoryQueryAnnotation.queryByNameUseSql("张三");
+        for(StudentJpa studentJpa : list2){
+            System.out.println(studentJpa);
+        }
 
+        studentJpaRepositoryQueryAnnotation.updateUsersNameById("李思",2);
 
     }
+
 
 }
