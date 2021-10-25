@@ -196,10 +196,13 @@ Repository接口
     详情见:StudentJpaRepositoryQueryAnnotation与ApplicationTests.testQueryAnnotation();  
 CrudRepository接口  
      CrudRepository接口继承了Repository接口。
-     详情见StudentJpaCrudRepository & ApplicationTests.testJpaCrudRepository();
-
+     详情见StudentJpaCrudRepository & ApplicationTests.testJpaCrudRepository();  
 PagingAndSortingRepository接口  
+     该接口提供了分页与排序的操作。注意：该接口继承了CrudRepository接口。  
+     可以利用Sort和Order排序、利用pageRequest分页，混搭来进行分页时排序。  
+     详情见StudentJPagingAndSortingRepository.class & ApplicationTests.testPagingAndSortingRepository();   
 JpaRepository接口  
+     
 JPASpecificationExecutor接口
   
    

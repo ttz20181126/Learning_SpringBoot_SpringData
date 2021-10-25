@@ -1,16 +1,17 @@
 package com.learn.springboot;
 
 import com.learn.springboot.pojo.StudentJpa;
-import com.learn.springboot.service.StudentJpaRepository;
-import com.learn.springboot.service.StudentJpaRepositoryByName;
-import com.learn.springboot.service.StudentJpaRepositoryQueryAnnotation;
-import com.learn.springboot.service.StudentService;
+import com.learn.springboot.service.*;
 import com.learn.springboot.service.impl.StudentJpaCrudRepository;
 import net.bytebuddy.asm.Advice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -50,9 +51,13 @@ public class ApplicationTests {
     @Autowired
     private StudentJpaRepositoryQueryAnnotation studentJpaRepositoryQueryAnnotation;
 
-
     @Autowired
     private StudentJpaCrudRepository studentJpaCrudRepository;
+
+    @Autowired
+    private StudentJPagingAndSortingRepository studentJPagingAndSortingRepository;
+
+
 
     @Test
     public void contextLoads() {
@@ -60,7 +65,7 @@ public class ApplicationTests {
     }
 
     /**
-     * 逆向生成表，并打印sql
+     * springboot集成spring data jpa  之 逆向生成表，并打印sql
      * Hibernate: insert into t_users (address, age, name) values (?, ?, ?)
      */
     @Test
@@ -74,7 +79,7 @@ public class ApplicationTests {
 
 
     /**
-     * Repository方法名称命名测试
+     * springboot集成spring data jpa  之 Repository方法名称命名测试
      */
     @Test
     public void testJpaRepositoryByMethodName(){
@@ -109,7 +114,7 @@ public class ApplicationTests {
     }
 
     /**
-     * Repository接口的@Query测试
+     * springboot集成spring data jpa  之 Repository接口的@Query测试
      *
      * @Query 只支持查询，需要update语句，要加上@Modifying
      *
@@ -134,7 +139,7 @@ public class ApplicationTests {
     }
 
     /**
-     * CrudRepository接口测试
+     * springboot集成spring data jpa  之 CrudRepository接口测试
      */
     @Test
     public void testJpaCrudRepository(){
@@ -155,6 +160,47 @@ public class ApplicationTests {
         //Optional<StudentJpa> byId = studentJpaCrudRepository.findById(4);
         //Iterable<StudentJpa> all = studentJpaCrudRepository.findAll();
         //studentJpaCrudRepository.deleteById(4);
+    }
+
+
+    /**
+     * springboot集成spring data jpa  之 PagingAndSortingRepository 接口测试
+     */
+    @Test
+    public void testPagingAndSortingRepository(){
+
+        //********************************1.sort排序方法**************************
+        //order定义了排序规则
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"id");
+        //sort对象封装了排序规则,多个排序规则可以装多个order.
+        Sort sort = new Sort(order);
+        List<StudentJpa> list = (List<StudentJpa>)this.studentJPagingAndSortingRepository.findAll(sort);
+        for(StudentJpa jpa : list){
+            System.out.println("迭代结果：" + jpa);
+        }
+
+        //**************************************2.page分页方法*************************************
+        //Pageable封装了分页参数：当前页，每页显示条数.注意：当前页从0开始。
+        // new PageRequest(int page, int size)//当前页，每页多少
+        Pageable pageable = new PageRequest(0, 2);
+        Page<StudentJpa> all = this.studentJPagingAndSortingRepository.findAll(pageable);
+        System.out.println("总条数:" + all.getTotalElements()  + ",总页数： " + all.getTotalPages());
+        List<StudentJpa> content = all.getContent();
+        for(StudentJpa s : content){
+            System.out.println("当前页数据 : " + s);
+        }
+
+
+        //**************************************3.分页+排序*************************************
+        Sort.Order order1 = new Sort.Order(Sort.Direction.DESC,"id");
+        Sort sort1 = new Sort(order1);
+        Pageable pageable1 = new PageRequest(0, 2,sort1);
+        Page<StudentJpa> all2 = this.studentJPagingAndSortingRepository.findAll(pageable1);
+        for(StudentJpa s1 : all2.getContent()){
+            System.out.println("当前页数据 : " + s1);
+        }
+
+
     }
 
 }
