@@ -11,10 +11,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +43,6 @@ public class ApplicationTests {
     @Autowired
     private StudentService studentService;
 
-
     @Autowired
     private StudentJpaRepository studentJpaRepository;
 
@@ -52,6 +57,9 @@ public class ApplicationTests {
 
     @Autowired
     private StudentJPagingAndSortingRepository studentJPagingAndSortingRepository;
+
+    @Autowired
+    private StudentJPASpecificationExecutor studentJPASpecificationExecutor;
 
 
 
@@ -209,5 +217,110 @@ public class ApplicationTests {
         List<StudentJpa> all = studentJpaRepository.findAll(sort);
         System.out.println(all);
     }
+
+    /**
+     * springboot集成spring data jpa  之  JPASpecificationExecutor
+     */
+    @Test
+    public void testStudentJPASpecificationExecutor(){
+        //****************************************1.单条件查询*****************************************************
+        //Specification封装查询条件。Predicate封装单个查询条件.
+        Specification<StudentJpa> spec = new Specification<StudentJpa>() {
+
+            /**
+             * @param root   查询对象的属性封装。
+             * @param criteriaQuery   封装我们要执行的查询中的各个部分的信息。select、from、order
+             * @param criteriaBuilder  查询条件的构造器，定义不同的查询条件。
+             * @return
+             */
+            @Override
+            public Predicate toPredicate(Root<StudentJpa> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //where name = ‘张三’
+                Predicate pred = criteriaBuilder.equal(root.get("name"), "张三");
+                return pred;
+            }
+        };
+        List<StudentJpa> all = this.studentJPASpecificationExecutor.findAll(spec);
+        for(StudentJpa s1 : all){
+            System.out.println("当前结果数据 : " + s1);
+        }
+
+
+
+        //****************************************2.多条件查询*****************************************************
+        //where name = '张三' and age = 11
+        Specification<StudentJpa> spec2 = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root<StudentJpa> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //where name = '张三' and age = 11
+                List<Predicate> list = new ArrayList<>();
+                list.add(criteriaBuilder.equal(root.get("name"), "张三"));
+                list.add(criteriaBuilder.equal(root.get("age"), 11));
+                Predicate[] arr = new Predicate[list.size()];
+                return criteriaBuilder.and(list.toArray(arr));
+            }
+        };
+        List<StudentJpa> all2 = this.studentJPASpecificationExecutor.findAll(spec2);
+        for(StudentJpa s1 : all2){
+            System.out.println("当前结果数据 : " + s1);
+        }
+
+
+        //****************************************3.多条件查询(其他写法)****************************************
+        //where name = '张三' and age = 11
+        Specification<StudentJpa> spec3 = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root<StudentJpa> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //where name = '张三' and age = 11
+                return criteriaBuilder.and(criteriaBuilder.equal(root.get("name"),"张三"),criteriaBuilder.equal(root.get("age"),11));
+            }
+        };
+        List<StudentJpa> all3 = this.studentJPASpecificationExecutor.findAll(spec3);
+        for(StudentJpa s1 : all3){
+            System.out.println("当前结果数据 : " + s1);
+        }
+
+        //where name = '张三' or age = 11
+        Specification<StudentJpa> spec4 = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root<StudentJpa> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //where name = '张三' or age = 11
+                return criteriaBuilder.or(criteriaBuilder.equal(root.get("name"),"张三"),criteriaBuilder.equal(root.get("age"),11));
+            }
+        };
+        List<StudentJpa> all4 = this.studentJPASpecificationExecutor.findAll(spec4);
+        for(StudentJpa s1 : all4){
+            System.out.println("当前结果数据 : " + s1);
+        }
+
+        //where (name = '张三' and  age = 15) or id = 3
+        Specification<StudentJpa> spec5 = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root<StudentJpa> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //where (name = '张三' and  age = 15) or id = 3
+                return criteriaBuilder.or((criteriaBuilder.and(criteriaBuilder.equal(root.get("name"),"张三"),criteriaBuilder.equal(root.get("age"),11))),criteriaBuilder.equal(root.get("id"),3));
+            }
+        };
+        List<StudentJpa> all5 = this.studentJPASpecificationExecutor.findAll(spec5);
+        for(StudentJpa s1 : all5){
+            System.out.println("当前结果数据 : " + s1);
+        }
+
+        //where (name = '张三' and  age = 15) or id = 3 limit 0,2
+        Specification<StudentJpa> spec6 = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root<StudentJpa> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //where (name = '张三' and  age = 15) or id = 3
+                return criteriaBuilder.or((criteriaBuilder.and(criteriaBuilder.equal(root.get("name"),"张三"),criteriaBuilder.equal(root.get("age"),11))),criteriaBuilder.equal(root.get("id"),3));
+            }
+        };
+        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        List<StudentJpa> all6 = this.studentJPASpecificationExecutor.findAll(spec6,sort);
+        for(StudentJpa s1 : all6){
+            System.out.println("当前结果数据 : " + s1);
+        }
+
+    }
+
 
 }

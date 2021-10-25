@@ -205,6 +205,9 @@ JpaRepository接口
       该接口继承了PagingAndSortingRepository接口。开发最常用，间接继承的接口多。  
       详情见StudentJpaRepository & ApplicationTests.testJpaRepository();
 JPASpecificationExecutor接口  
+      该接口主要是提供了多条件查询的支持，并且可以在查询中添加分页与排序。  
+      JPASpecificationExecutor是单独存在的，完全独立。所以一般利用接口多继承，也继承上面的其他接口；
+      详情见StudentJPASpecificationExecutor & ApplicationTests.testStudentJPASpecificationExecutor();
      
   
    
