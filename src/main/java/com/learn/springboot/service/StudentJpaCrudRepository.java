@@ -1,4 +1,4 @@
-package com.learn.springboot.service.impl;
+package com.learn.springboot.service;
 
 import com.learn.springboot.pojo.StudentJpa;
 import org.springframework.data.repository.CrudRepository;

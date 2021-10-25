@@ -202,8 +202,10 @@ PagingAndSortingRepository接口
      可以利用Sort和Order排序、利用pageRequest分页，混搭来进行分页时排序。  
      详情见StudentJPagingAndSortingRepository.class & ApplicationTests.testPagingAndSortingRepository();   
 JpaRepository接口  
+      该接口继承了PagingAndSortingRepository接口。开发最常用，间接继承的接口多。  
+      详情见StudentJpaRepository & ApplicationTests.testJpaRepository();
+JPASpecificationExecutor接口  
      
-JPASpecificationExecutor接口
   
    
     

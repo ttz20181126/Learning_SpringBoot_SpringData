@@ -2,8 +2,7 @@ package com.learn.springboot;
 
 import com.learn.springboot.pojo.StudentJpa;
 import com.learn.springboot.service.*;
-import com.learn.springboot.service.impl.StudentJpaCrudRepository;
-import net.bytebuddy.asm.Advice;
+import com.learn.springboot.service.StudentJpaCrudRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * springboot测试类
@@ -65,7 +61,8 @@ public class ApplicationTests {
     }
 
     /**
-     * springboot集成spring data jpa  之 逆向生成表，并打印sql
+     * springboot集成spring data jpa  之  JpaRepository
+     * 逆向生成表，并打印sql
      * Hibernate: insert into t_users (address, age, name) values (?, ?, ?)
      */
     @Test
@@ -199,8 +196,18 @@ public class ApplicationTests {
         for(StudentJpa s1 : all2.getContent()){
             System.out.println("当前页数据 : " + s1);
         }
+    }
 
-
+    /**
+     * springboot集成spring data jpa  之  JpaRepository
+     */
+    @Test
+    public void testJpaRepository(){
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"id");
+        Sort sort = new Sort(order);
+        //不用再像使用PagingAndSortingRepository强转
+        List<StudentJpa> all = studentJpaRepository.findAll(sort);
+        System.out.println(all);
     }
 
 }
