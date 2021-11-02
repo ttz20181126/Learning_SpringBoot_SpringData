@@ -207,8 +207,12 @@ JpaRepository接口
 JPASpecificationExecutor接口  
       该接口主要是提供了多条件查询的支持，并且可以在查询中添加分页与排序。  
       JPASpecificationExecutor是单独存在的，完全独立。所以一般利用接口多继承，也继承上面的其他接口；
-      详情见StudentJPASpecificationExecutor & ApplicationTests.testStudentJPASpecificationExecutor();
-     
-  
+      详情见StudentJPASpecificationExecutor & ApplicationTests.testStudentJPASpecificationExecutor();  
+      
+8.4 关联映射操作  
+8.4.1 一对多的关联关系  
+      角色和用户：一个角色多个用户，一个用户只属于一个角色。  
+      详情见：UserMapping & RoleMapping。
+      
    
     
