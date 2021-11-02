@@ -1,4 +1,4 @@
-package com.learn.springboot.controller;
+package com.learn.springboot.controller.exception;
 
 
 import org.springframework.context.annotation.Bean;
