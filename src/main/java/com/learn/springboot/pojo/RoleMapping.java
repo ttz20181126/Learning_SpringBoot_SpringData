@@ -28,6 +28,13 @@ public class RoleMapping {
     @OneToMany(mappedBy = "roleMapping")
     private Set<UserMapping> users = new HashSet<>();
 
+    /**
+     * JoinTable 关联表。多对多通过中间表。
+     */
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @JoinTable(name="t_role_menus",joinColumns = @JoinColumn(name="role_id"),inverseJoinColumns = @JoinColumn(name = "menus_id"))
+    private Set<MenusMapping> menus = new HashSet<>();
+
     public Integer getRoleId() {
         return roleId;
     }
@@ -51,6 +58,15 @@ public class RoleMapping {
 
     public void setUsers(Set<UserMapping> users) {
         this.users = users;
+    }
+
+
+    public Set<MenusMapping> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(Set<MenusMapping> menus) {
+        this.menus = menus;
     }
 
     @Override

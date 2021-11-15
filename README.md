@@ -185,6 +185,7 @@ SpringLoader与DevTools的区别：
 8.springboot整合spring data jpa.  
 8.1 spring data JPA介绍  
     spring data就是spring提供的操作数据的框架。spring data JPA只是spring data框架下的基于JPA标准操作数据的模块，简化持久层的代码。  
+    spring data jpa 底层其实还是hibernate。  
 
 8.2 spring data jpa搭建  
     引入依赖，修改配置文件，StudentJpa.class使用@Table @Id等注解，建立映射。ApplicationTests.class测试类中测试。  
@@ -213,8 +214,12 @@ JPASpecificationExecutor接口
 8.4.1 一对多的关联关系和级联操作    
       角色和用户：一个角色多个用户，一个用户只属于一个角色。  
       关系映射类详情见：UserMapping & RoleMapping。  
-      映射关系操作见：UserMappingJpaRepository & ApplicationTests.testOneToManySave()和testOneToManySave()一对多操作;
-8.4.2 
+      映射关系操作见：UserMappingJpaRepository & ApplicationTests.testOneToManySave()和testOneToManyFind()一对多操作;
+8.4.2 多对多的关联关系和级联操作  
+      角色和菜单：多对多  
+      关系映射见：RoleMapping & MenusMapping  
+      映射关系操作见：RoleMappingJpaRepository & ApplicationTests.testManyToManySave()testManyToManyFind()一对多操作;  
+      注意：springboot data jpa底层hibernate是延迟加载(懒加载),级联查询时候修改fetch = Fetch.Eager理解加载。多对多关系建立依赖于第三张关系表。
       
    
     

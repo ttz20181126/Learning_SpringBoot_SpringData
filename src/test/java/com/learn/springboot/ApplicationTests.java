@@ -1,5 +1,6 @@
 package com.learn.springboot;
 
+import com.learn.springboot.pojo.MenusMapping;
 import com.learn.springboot.pojo.RoleMapping;
 import com.learn.springboot.pojo.StudentJpa;
 import com.learn.springboot.pojo.UserMapping;
@@ -24,6 +25,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * springboot测试类
@@ -65,6 +67,9 @@ public class ApplicationTests {
 
     @Autowired
     private UserMappingJpaRepository userMappingJpaRepository;
+
+    @Autowired
+    private RoleMappingJpaRepository roleMappingJpaRepository;
 
 
 
@@ -360,4 +365,51 @@ public class ApplicationTests {
     }
 
 
+    @Test
+    public void testManyToManySave(){
+        //创建角色
+        RoleMapping roleMapping = new RoleMapping();
+        roleMapping.setRoleName("项目经理");
+
+        //创建菜单
+        MenusMapping menusMapping = new MenusMapping();
+        menusMapping.setMenusName("Springboot教程");
+        menusMapping.setParentId(0);
+
+        MenusMapping menusMapping2 = new MenusMapping();
+        menusMapping2.setMenusName("第一章");
+        menusMapping2.setParentId(1);
+
+        //关联
+        roleMapping.getMenus().add(menusMapping);
+        roleMapping.getMenus().add(menusMapping2);
+
+        menusMapping.getRoles().add(roleMapping);
+        menusMapping2.getRoles().add(roleMapping);
+
+        //保存
+        roleMappingJpaRepository.save(roleMapping);
+    }
+
+
+    /****
+     * 多对多的级联操作之查询
+     */
+    @Test
+    public void testManyToManyFind(){
+
+        /***
+         * 直接运行报错：could not initialize proxy - no Session
+         * 原因：spring data jpa底层还是hibernate，hibernate默认延迟加载，查询角色后再去查询菜单，和数据库的会话已经关闭了。
+         * 处理：延迟加载(懒加载，级联操作等发送需求再查询)该立即加载。fetch = FetchType.EAGER
+         *
+         */
+        RoleMapping roleMapping = roleMappingJpaRepository.findById(2).get();
+        System.out.println("rolename:" + roleMapping.getRoleName());
+        Set<MenusMapping> menus = roleMapping.getMenus();
+        for (MenusMapping menusMapping : menus){
+            System.out.println(menus);
+        }
+
+    }
 }
