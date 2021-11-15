@@ -43,4 +43,20 @@ public class RoleMapping {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
+
+
+    public Set<UserMapping> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserMapping> users) {
+        this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "RoleMapping{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName;
+    }
 }

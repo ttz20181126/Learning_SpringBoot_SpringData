@@ -1,8 +1,9 @@
 package com.learn.springboot;
 
+import com.learn.springboot.pojo.RoleMapping;
 import com.learn.springboot.pojo.StudentJpa;
+import com.learn.springboot.pojo.UserMapping;
 import com.learn.springboot.service.*;
-import com.learn.springboot.service.StudentJpaCrudRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * springboot测试类
@@ -60,6 +62,9 @@ public class ApplicationTests {
 
     @Autowired
     private StudentJPASpecificationExecutor studentJPASpecificationExecutor;
+
+    @Autowired
+    private UserMappingJpaRepository userMappingJpaRepository;
 
 
 
@@ -320,6 +325,38 @@ public class ApplicationTests {
             System.out.println("当前结果数据 : " + s1);
         }
 
+    }
+
+
+    /**
+     * spring data jpa的一对多关系的保存
+     */
+    @Test
+    public void testOneToManySave(){
+        //创建一个用户
+        UserMapping userMapping = new UserMapping();
+        userMapping.setName("Mr");
+        userMapping.setAddress("深圳市");
+        userMapping.setAge(18);
+        //创建一个角色
+        RoleMapping roleMapping = new RoleMapping();
+        roleMapping.setRoleName("部长");
+        //关联
+        userMapping.setRoleMapping(roleMapping);
+        roleMapping.getUsers().add(userMapping);
+        //保存 --UserMapping中@ManyToOne后添加(cascade = CascadeType.PERSIST) 级联保存
+        userMappingJpaRepository.save(userMapping);
+    }
+
+    /**
+     * 一对多关系的查询
+     */
+    @Test
+    public void testOneToManyFind(){
+        UserMapping userMapping = userMappingJpaRepository.findById(1).get();
+        System.out.println(userMapping);
+        RoleMapping roleMapping = userMapping.getRoleMapping();
+        System.out.println(roleMapping);
     }
 
 

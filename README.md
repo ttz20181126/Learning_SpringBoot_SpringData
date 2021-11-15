@@ -210,9 +210,11 @@ JPASpecificationExecutor接口
       详情见StudentJPASpecificationExecutor & ApplicationTests.testStudentJPASpecificationExecutor();  
       
 8.4 关联映射操作  
-8.4.1 一对多的关联关系  
+8.4.1 一对多的关联关系和级联操作    
       角色和用户：一个角色多个用户，一个用户只属于一个角色。  
-      详情见：UserMapping & RoleMapping。
+      关系映射类详情见：UserMapping & RoleMapping。  
+      映射关系操作见：UserMappingJpaRepository & ApplicationTests.testOneToManySave()和testOneToManySave()一对多操作;
+8.4.2 
       
    
     

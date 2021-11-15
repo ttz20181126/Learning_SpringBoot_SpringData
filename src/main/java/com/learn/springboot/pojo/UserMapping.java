@@ -27,7 +27,7 @@ public class UserMapping {
     private String address;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)   //级联操作报错用户的时候保存角色。
     @JoinColumn(name = "role_id")  //维护外键
     private RoleMapping roleMapping;
 
@@ -69,5 +69,14 @@ public class UserMapping {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "UserMapping{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", address='" + address;
     }
 }
