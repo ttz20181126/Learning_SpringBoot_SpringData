@@ -2,10 +2,14 @@ package com.learn.springboot.pojo;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+/**
+ * spring boot整合 spring data jpa
+ */
 @Entity
 @Table(name="t_students")
-public class StudentJpa {
+public class StudentJpa implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -89,6 +89,17 @@
             <version>1.1.22</version>
         </dependency>
 
+        <!--spring boot缓存支持启动器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <!--Ehcache-->
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+
         <!--
         <dependency>
             <groupId>org.springframework.boot</groupId>

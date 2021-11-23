@@ -71,6 +71,8 @@ public class ApplicationTests {
     @Autowired
     private RoleMappingJpaRepository roleMappingJpaRepository;
 
+    @Autowired
+    private StudentJpaEhcacheService studentJpaEhcacheService;
 
 
     @Test
@@ -411,5 +413,19 @@ public class ApplicationTests {
             System.out.println(menus);
         }
 
+    }
+
+    /**
+     * 测试ehcache
+     * 没有@Cacheable(  查看日志，发现查询两次。
+     * 添加@Cacheable 只查询一次。
+     */
+    @Test
+    public void testEhcache(){
+        StudentJpa studentById = studentJpaEhcacheService.findStudentById(1);
+        System.out.println("1:" + studentById);
+
+        StudentJpa studentById2 = studentJpaEhcacheService.findStudentById(1);
+        System.out.println("2:" + studentById2);
     }
 }

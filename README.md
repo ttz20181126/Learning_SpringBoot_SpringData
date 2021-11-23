@@ -218,8 +218,18 @@ JPASpecificationExecutor接口
 8.4.2 多对多的关联关系和级联操作  
       角色和菜单：多对多  
       关系映射见：RoleMapping & MenusMapping  
-      映射关系操作见：RoleMappingJpaRepository & ApplicationTests.testManyToManySave()testManyToManyFind()一对多操作;  
-      注意：springboot data jpa底层hibernate是延迟加载(懒加载),级联查询时候修改fetch = Fetch.Eager理解加载。多对多关系建立依赖于第三张关系表。
+      映射关系操作见：RoleMappingJpaRepository & ApplicationTests.testManyToManySave() testManyToManyFind()一对多操作;  
+      注意：springboot data jpa底层hibernate是延迟加载(懒加载),级联查询时候修改fetch = Fetch.Eager理解加载。多对多关系建立依赖于第三张关系表。  
       
+      
+9.springboot整合ehcache  
+9.1 整合ehcache  
+     添加坐标、  
+     配置文件ehcache.xml,放在classpath下，即src/main/java/resource下。在ehcache的jar下复制过来，再改动。  
+     在application.properties中配置ehcache的配置文件位置。  
+     启动类添加注解开启ehcache。实现方法中添加@Cacheable注解，      
+     详情见:ApplicationTests.testEhcache()
+     
+           
    
     

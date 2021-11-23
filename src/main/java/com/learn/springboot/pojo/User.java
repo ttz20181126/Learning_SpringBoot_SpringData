@@ -1,7 +1,7 @@
 package com.learn.springboot.pojo;
 
 /***
- * @ClassName User
+ * @ClassName User  spring boot整合 jsp、freemarker、thymeleaf。
  * @Description TODO
  * @Author Taycen
  * @Date 2019/8/22 0022 16:48
