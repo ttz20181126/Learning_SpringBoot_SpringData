@@ -228,7 +228,12 @@ JPASpecificationExecutor接口
      配置文件ehcache.xml,放在classpath下，即src/main/java/resource下。在ehcache的jar下复制过来，再改动。  
      在application.properties中配置ehcache的配置文件位置。  
      启动类添加注解开启ehcache。实现方法中添加@Cacheable注解，      
-     详情见:ApplicationTests.testEhcache()
+     详情见:ApplicationTests.testEhcache()  
+9.2 @Ehcache的key属性  
+    @Cacheable(name="指定配置文件的策略",key=“指定缓存的key")  
+    key如果相同就使用缓存  
+    详情见ApplicationTests.testEhcacheKeyField();  
+9.3          
      
            
    

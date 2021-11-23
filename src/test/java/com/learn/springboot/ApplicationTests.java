@@ -428,4 +428,25 @@ public class ApplicationTests {
         StudentJpa studentById2 = studentJpaEhcacheService.findStudentById(1);
         System.out.println("2:" + studentById2);
     }
+
+
+    /**
+     * @Cacheable(value = "defineBySelf",key = "#pageable")
+     *      1,2查询一次     3查询一次
+     *
+     * @Cacheable(value = "defineBySelf",key = "#pageable.pageSize")
+     *      1,2,3共查询一次
+     */
+    @Test
+    public void testEhcacheKeyField(){
+        Pageable  pageable = new PageRequest(0,2);
+        long totalElements = this.studentJpaEhcacheService.findStudentByPage(pageable).getTotalElements();
+        System.out.println("1:" + totalElements);
+        long totalElements2 = this.studentJpaEhcacheService.findStudentByPage(pageable).getTotalElements();
+        System.out.println("2:" + totalElements2);
+
+        pageable = new PageRequest(1,2);
+        long totalElements3 = this.studentJpaEhcacheService.findStudentByPage(pageable).getTotalElements();
+        System.out.println("3:" + totalElements3);
+    }
 }

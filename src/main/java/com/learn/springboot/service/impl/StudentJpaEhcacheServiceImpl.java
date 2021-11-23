@@ -25,6 +25,13 @@ public class StudentJpaEhcacheServiceImpl implements StudentJpaEhcacheService {
         return studentJpaRepository.findAll();
     }
 
+    /**
+     * @Cacheable 把方法的返回值添加到Ehcache中做缓存
+     *    value属性：指定一个Ehcache配置文件中的缓存策略，如没有给定value,name则表示使用默认的缓存策略
+     *    key属性: 给存储的值起个名称，在查询时如果有名称相同的，那么这从缓存中将数据返回。
+     * @param id
+     * @return
+     */
     @Override
     @Cacheable(value = "defineBySelf") //对当前查询的对象做缓存处理,pojo要实现Serializable,支持缓存到磁盘
     public StudentJpa findStudentById(Integer id) {
@@ -32,6 +39,8 @@ public class StudentJpaEhcacheServiceImpl implements StudentJpaEhcacheService {
     }
 
     @Override
+    //@Cacheable(value = "defineBySelf",key = "#pageable")
+    @Cacheable(value = "defineBySelf",key = "#pageable.pageSize")
     public Page<StudentJpa> findStudentByPage(Pageable pageable) {
         return studentJpaRepository.findAll(pageable);
     }
