@@ -4,6 +4,7 @@ import com.learn.springboot.pojo.StudentJpa;
 import com.learn.springboot.service.StudentJpaEhcacheService;
 import com.learn.springboot.service.StudentJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ public class StudentJpaEhcacheServiceImpl implements StudentJpaEhcacheService {
 
 
     @Override
+    @Cacheable(value = "defineBySelf")
     public List<StudentJpa> findStudentAll() {
         return studentJpaRepository.findAll();
     }
@@ -46,6 +48,7 @@ public class StudentJpaEhcacheServiceImpl implements StudentJpaEhcacheService {
     }
 
     @Override
+    @CacheEvict(value = "defineBySelf",allEntries = true)  //清除以defineBySelf策略存储的缓存。
     public void saveStudent(StudentJpa studentJpa) {
         studentJpaRepository.save(studentJpa);
     }

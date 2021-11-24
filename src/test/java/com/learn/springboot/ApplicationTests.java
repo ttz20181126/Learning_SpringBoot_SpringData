@@ -449,4 +449,23 @@ public class ApplicationTests {
         long totalElements3 = this.studentJpaEhcacheService.findStudentByPage(pageable).getTotalElements();
         System.out.println("3:" + totalElements3);
     }
+
+
+    /**
+     * 测试CacheEvict
+     *
+     * 没有evict，中间插入了一条数据，但是两次打印的条数仍然一样。
+     */
+    @Test
+    public void testCacheEvict(){
+        System.out.println("1:" + studentJpaEhcacheService.findStudentAll().size());
+
+        StudentJpa studentJpa = new StudentJpa();
+        studentJpa.setName("jessica");
+        studentJpa.setAge(18);
+        studentJpa.setAddress("武汉");
+        studentJpaEhcacheService.saveStudent(studentJpa);
+
+        System.out.println("2:" + studentJpaEhcacheService.findStudentAll().size());
+    }
 }

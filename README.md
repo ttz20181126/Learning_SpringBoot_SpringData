@@ -233,7 +233,10 @@ JPASpecificationExecutor接口
     @Cacheable(name="指定配置文件的策略",key=“指定缓存的key")  
     key如果相同就使用缓存  
     详情见ApplicationTests.testEhcacheKeyField();  
-9.3          
+9.3 @CacheEvict注解的使用  
+    @CacheEvict(value = "defineBySelf",allEntries = true)  //清除以defineBySelf策略存储的缓存。  
+    两次查询中添加一次，使用缓存，查询结果一致，需要再保存按钮中添加清除缓存。  
+    详情见：ApplicationTests.testCacheEvict()以及StudentJpaEhcacheServiceImpl.saveStudent();
      
            
    
