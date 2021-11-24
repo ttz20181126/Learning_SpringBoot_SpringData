@@ -236,7 +236,20 @@ JPASpecificationExecutor接口
 9.3 @CacheEvict注解的使用  
     @CacheEvict(value = "defineBySelf",allEntries = true)  //清除以defineBySelf策略存储的缓存。  
     两次查询中添加一次，使用缓存，查询结果一致，需要再保存按钮中添加清除缓存。  
-    详情见：ApplicationTests.testCacheEvict()以及StudentJpaEhcacheServiceImpl.saveStudent();
+    详情见：ApplicationTests.testCacheEvict()以及StudentJpaEhcacheServiceImpl.saveStudent();  
+    
+10.springboot整合spring data redis  
+10.1 安装redis  
+     安装编译器  yum install gcc-c++  
+     解压redis  tar -zxvf redis-3.0.0.tar.gz  
+     进入解压后目录编译  cd resis-3.0.0然后make  
+     将redis安装到指定目录 make prefix=/usr/local/redis install  
+     启动 cd /usr/local/redis    ./redis-server  
+     停止   ctrl+c  
+     这是前置启动，后置启动去解压缩包下cp命令拷贝一个redis.conf,将demonize的no改为yes,用./redis-server redis.conf启动  
+     可以配合redis-desktop-manager可视化工具连接redis，查看redis数据库。  
+ 10.2      
+    
      
            
    
