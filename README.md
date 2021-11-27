@@ -252,7 +252,10 @@ JPASpecificationExecutor接口
      spring data redis属于spring data下的一个模块，作用就是简化对于redis的操作。  
      A:修改pom,添加spring data redis坐标。    
      B:配置文件或者使用注解+代码配置redis。详情见:RedisConfig.java。  
-10.3      
+10.3 spring data redis测试  
+     详情见：   ApplicationTests.testSpringDateRedis();  
+     设置和获取redis键值对方法：redisTemplate.opsForValue().set("key","getech");  redisTemplate.opsForValue().get("key");  
+10.4        
     
      
            

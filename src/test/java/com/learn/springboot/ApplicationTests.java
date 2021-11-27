@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +74,9 @@ public class ApplicationTests {
 
     @Autowired
     private StudentJpaEhcacheService studentJpaEhcacheService;
+
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
 
     @Test
@@ -467,5 +471,19 @@ public class ApplicationTests {
         studentJpaEhcacheService.saveStudent(studentJpa);
 
         System.out.println("2:" + studentJpaEhcacheService.findStudentAll().size());
+    }
+
+
+    /**
+     * spring data redis测试
+     */
+    @Test
+    public void testSpringDateRedis(){
+        //添加一个字符串
+        this.redisTemplate.opsForValue().set("key","getech");
+
+        //获取
+        String value = (String)this.redisTemplate.opsForValue().get("key");
+        System.out.println("redis-value:" + value);
     }
 }

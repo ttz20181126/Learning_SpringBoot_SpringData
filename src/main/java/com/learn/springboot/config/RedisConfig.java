@@ -41,7 +41,7 @@ public class RedisConfig {
         factory.setPoolConfig(config);
         //配置连接redis的信息
         factory.setHostName("127.0.0.1");
-        factory.setPort(6378);
+        factory.setPort(6379);
         factory.setDatabase(0);
         return factory;
     }
