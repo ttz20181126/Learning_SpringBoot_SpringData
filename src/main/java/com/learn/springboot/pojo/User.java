@@ -1,5 +1,7 @@
 package com.learn.springboot.pojo;
 
+import java.io.Serializable;
+
 /***
  * @ClassName User  spring boot整合 jsp、freemarker、thymeleaf。
  * @Description TODO
@@ -7,7 +9,9 @@ package com.learn.springboot.pojo;
  * @Date 2019/8/22 0022 16:48
  * @Jdk 1.8
  ***/
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -5736834809501397621L;
+
     private Integer userId;
     private Integer userAge;
     private String userName;
@@ -43,5 +47,14 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userAge=" + userAge +
+                ", userName='" + userName + '\'' +
+                '}';
     }
 }

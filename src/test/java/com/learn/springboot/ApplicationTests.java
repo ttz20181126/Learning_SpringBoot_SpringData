@@ -1,9 +1,6 @@
 package com.learn.springboot;
 
-import com.learn.springboot.pojo.MenusMapping;
-import com.learn.springboot.pojo.RoleMapping;
-import com.learn.springboot.pojo.StudentJpa;
-import com.learn.springboot.pojo.UserMapping;
+import com.learn.springboot.pojo.*;
 import com.learn.springboot.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -485,5 +483,28 @@ public class ApplicationTests {
         //获取
         String value = (String)this.redisTemplate.opsForValue().get("key");
         System.out.println("redis-value:" + value);
+    }
+
+    /**
+     * spring data redis存对象
+     * 重新设置序列化器件
+     * 对象要实现序列化接口 implements Serializable。
+     * 打开redis管理器，可以看到乱码是正常的：对象序列化成字节，然后以字符形式存在redis
+     *
+     * 【直接使用序列化器避免我们以往使用json转化】
+     */
+    @Test
+    public void testSetObject(){
+        User user = new User();
+        user.setUserId(1);
+        user.setUserAge(18);
+        user.setUserName("王五");
+        //重新设置序列化器,否则:com.learn.springboot.pojo.User cannot be cast to java.lang.String
+        this.redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        this.redisTemplate.opsForValue().set("user",user);
+
+        //如果在另外方法取值，要设置序列化器，以相同的序列化拿
+        User value = (User)this.redisTemplate.opsForValue().get("user");
+        System.out.println(value);
     }
 }

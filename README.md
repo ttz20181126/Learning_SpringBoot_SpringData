@@ -253,12 +253,15 @@ JPASpecificationExecutor接口
      A:修改pom,添加spring data redis坐标。    
      B:配置文件或者使用注解+代码配置redis。详情见:RedisConfig.java。  
 10.3 spring data redis测试  
-     详情见：   ApplicationTests.testSpringDateRedis();  
+     详情见：ApplicationTests.testSpringDateRedis();  
      设置和获取redis键值对方法：redisTemplate.opsForValue().set("key","getech");  redisTemplate.opsForValue().get("key");  
 10.4 提取redis的链接参数  
      redis配置类很多数据上线后需要修改，应提取出来放在配置文件中。  
      详情见：application.properties与RedisConfig。注意：@ConfigurationProperties(prefix = "")可以将配置文件中相同前缀的内容创建一个实体。  
-10.5             
+10.5 存储对象  
+     注意要重新设置序列化器，同时对象实体类要实现序列化接口。让对象可以被序列化成字节。  
+     详情见：User &  ApplicationTests.testSetObject();  
+10.6 
     
      
            
