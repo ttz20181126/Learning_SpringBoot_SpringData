@@ -2,10 +2,8 @@ package com.learn.springboot.config;
 
 
 import com.learn.springboot.controller.scheduler.QuartzDemo;
-import org.quartz.JobDetail;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
@@ -61,9 +59,12 @@ public class QuartzConfig {
      * 3.创建scheduler对象
      */
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean(SimpleTriggerFactoryBean simpleTriggerFactoryBean){
+    public SchedulerFactoryBean schedulerFactoryBean(SimpleTriggerFactoryBean simpleTriggerFactoryBean,MyAdaptableJobFactory myAdaptableJobFactory){
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         schedulerFactoryBean.setTriggers(simpleTriggerFactoryBean.getObject());
+
+        schedulerFactoryBean.setJobFactory(myAdaptableJobFactory);
+
         return schedulerFactoryBean;
     }
 }

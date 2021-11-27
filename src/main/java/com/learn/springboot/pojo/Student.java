@@ -48,4 +48,17 @@ public class Student {
     public void setAge(Integer age) {
         this.age = age;
     }
+
+    public Student(){}
+
+    public Student(Integer id, @NotBlank(message = "用户名不能为空（默认值是：不能为空）") @Length(min = 2, max = 6, message = "最小长度为2,最大长度为6") String name, @NotNull @Min(value = 12) Integer age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public Student(@NotBlank(message = "用户名不能为空（默认值是：不能为空）") @Length(min = 2, max = 6, message = "最小长度为2,最大长度为6") String name, @NotNull @Min(value = 12) Integer age) {
+        this.name = name;
+        this.age = age;
+    }
 }

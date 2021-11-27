@@ -303,7 +303,14 @@ JPASpecificationExecutor接口
        导入jar：quartz、spring-context-support、spring-tx;   
        编写实现Job接口的定时执行任务；  
        编写配置类，配置Quartz，不需要像在javase中调用start()启动，而是springboot启动类中@EnableScheduling。  
-11.2.4        
+11.2.4  Job类对象注入  
+       直接autowired注入启动会报空指针异常，因为配置类中注入job，是通过反射。job不在spring ioc容器中，结果你在类里面注入ioc的对象，报错。  
+       重写方法让job对象放到spring ioc容器中；  
+       scheduler设置这个重写的类job工厂。  
+       详情见：QuartzDemo、MyAdaptableJobFactory、QuartzConfig.schedulerFactoryBean();  
+       
+12.              
+    
                
      
      
