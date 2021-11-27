@@ -270,7 +270,35 @@ JPASpecificationExecutor接口
 11.1 @Scheduled使用  
      scheduled是spring3.0以后自带的定时任务器。导入spring的jar就行。  
      使用@Scheduled标识定时任务执行的方法，cron表达式标识执行频率，@EnableScheduling在启动类启动。  
-     详情见：ScheduledDemoController 与 Application。       
+     详情见：ScheduledDemoController 与 Application。   
+11.2 Quartz定时器  
+     Quartz是job scheduling任务调度领域的开源项目，可以在javase和javaee使用。https://baike.baidu.com/item/quartz/3643055?fr=aladdin
+11.2.1 Quartz的使用思路  
+      job 任务   你要做什么事  
+      Trigger 触发器  你什么时候去做  
+      Scheduler 任务调度 你什么时候需要去做什么是？   
+11.2.2 Quartz基本使用       
+      可以在普通javase项目使用。创建普通maven项目不用依赖springboot；  
+      pom引入依赖GAV:org.quartz-scheduler  quartz  2.2.1   
+      创建类QuartzDemo implements Job,实现execute方法，这个方法就是任务调度执行的方法。随意打印一句话，  
+      测试类中main方法中:
+      ```
+      public static void main(String[] args){
+            JobDetail job = JobBuilder.newJob(QuartzDemo.class).build();
+            /**
+            **两种方法：
+            ** 1.简单的trigger出发时间，通过Quartz提供的一个方法来完成简单的重复调用
+            ** 2.cron Trigger 按照cron表达式来给定触发的时间
+            **
+            ***/
+            Trigger trigger = TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.repateSecondlyForever).build();
+            Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/2 * * *  * ?")).build();
+            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+            scheduler.scheduleJob(job,scheduler);
+            scheduler.start();
+      }
+      ```    
+      启动main~~~！    
      
      
     
