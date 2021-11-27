@@ -248,7 +248,11 @@ JPASpecificationExecutor接口
      停止   ctrl+c  
      这是前置启动，后置启动去解压缩包下cp命令拷贝一个redis.conf,将demonize的no改为yes,用./redis-server redis.conf启动  
      可以配合redis-desktop-manager可视化工具连接redis，查看redis数据库。  
- 10.2      
+ 10.2 整合spring data redis步骤  
+     spring data redis属于spring data下的一个模块，作用就是简化对于redis的操作。  
+     A:修改pom,添加spring data redis坐标。    
+     B:配置文件或者使用注解+代码配置redis。详情见:RedisConfig.java。  
+10.3      
     
      
            
