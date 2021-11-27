@@ -222,7 +222,7 @@ JPASpecificationExecutor接口
       注意：springboot data jpa底层hibernate是延迟加载(懒加载),级联查询时候修改fetch = Fetch.Eager理解加载。多对多关系建立依赖于第三张关系表。  
       
       
-9.springboot整合ehcache  
+9.springboot整合ehcache【缓存技术】    
 9.1 整合ehcache  
      添加坐标、  
      配置文件ehcache.xml,放在classpath下，即src/main/java/resource下。在ehcache的jar下复制过来，再改动。  
@@ -238,7 +238,7 @@ JPASpecificationExecutor接口
     两次查询中添加一次，使用缓存，查询结果一致，需要再保存按钮中添加清除缓存。  
     详情见：ApplicationTests.testCacheEvict()以及StudentJpaEhcacheServiceImpl.saveStudent();  
     
-10.springboot整合spring data redis  
+10.springboot整合spring data redis【缓存技术】        
 10.1 安装redis  
      安装编译器  yum install gcc-c++  
      解压redis  tar -zxvf redis-3.0.0.tar.gz  
@@ -264,6 +264,14 @@ JPASpecificationExecutor接口
 10.6 以json格式存储java对象  
      上述以JDK序列化器存比json格式会浪费5倍以上空间。使用Jackson2JsonRedisSerializer序列化器替换JdkSerializationRedisSerializer。  
      详情见:ApplicationTests.testSetJsonObject();  
+     
+     
+11 spring boot定时任务  
+11.1 @Scheduled使用  
+     scheduled是spring3.0以后自带的定时任务器。导入spring的jar就行。  
+     使用@Scheduled标识定时任务执行的方法，cron表达式标识执行频率，@EnableScheduling在启动类启动。  
+     详情见：ScheduledDemoController 与 Application。       
+     
      
     
      
