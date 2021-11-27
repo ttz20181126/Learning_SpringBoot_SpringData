@@ -261,7 +261,10 @@ JPASpecificationExecutor接口
 10.5 存储对象  
      注意要重新设置序列化器，同时对象实体类要实现序列化接口。让对象可以被序列化成字节。  
      详情见：User &  ApplicationTests.testSetObject();  
-10.6 
+10.6 以json格式存储java对象  
+     上述以JDK序列化器存比json格式会浪费5倍以上空间。使用Jackson2JsonRedisSerializer序列化器替换JdkSerializationRedisSerializer。  
+     详情见:ApplicationTests.testSetJsonObject();  
+     
     
      
            

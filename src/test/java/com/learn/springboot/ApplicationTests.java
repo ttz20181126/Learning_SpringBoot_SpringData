@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -486,7 +487,7 @@ public class ApplicationTests {
     }
 
     /**
-     * spring data redis存对象
+     * spring data redis存对象--以JDK序列化形式存
      * 重新设置序列化器件
      * 对象要实现序列化接口 implements Serializable。
      * 打开redis管理器，可以看到乱码是正常的：对象序列化成字节，然后以字符形式存在redis
@@ -506,5 +507,23 @@ public class ApplicationTests {
         //如果在另外方法取值，要设置序列化器，以相同的序列化拿
         User value = (User)this.redisTemplate.opsForValue().get("user");
         System.out.println(value);
+    }
+
+    /**
+     * 以json形式存实体对象，比jdk序列化器更省空间
+     */
+    @Test
+    public void testSetJsonObject(){
+        User user = new User();
+        user.setUserId(2);
+        user.setUserAge(18);
+        user.setUserName("王Json五");
+
+        this.redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(User.class));
+        this.redisTemplate.opsForValue().set("user2",user);
+
+        User value = (User)this.redisTemplate.opsForValue().get("user2");
+        System.out.println(value);
+
     }
 }
