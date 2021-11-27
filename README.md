@@ -277,7 +277,7 @@ JPASpecificationExecutor接口
       job 任务   你要做什么事  
       Trigger 触发器  你什么时候去做  
       Scheduler 任务调度 你什么时候需要去做什么是？   
-11.2.2 Quartz基本使用       
+11.2.2 Quartz基本使用-javase整合         
       可以在普通javase项目使用。创建普通maven项目不用依赖springboot；  
       pom引入依赖GAV:org.quartz-scheduler  quartz  2.2.1   
       创建类QuartzDemo implements Job,实现execute方法，这个方法就是任务调度执行的方法。随意打印一句话，  
@@ -298,7 +298,13 @@ JPASpecificationExecutor接口
             scheduler.start();
       }
       ```    
-      启动main~~~！    
+      启动main~~~！ 
+11.2.3  springboot整合Quartz  
+       导入jar：quartz、spring-context-support、spring-tx;   
+       编写实现Job接口的定时执行任务；  
+       编写配置类，配置Quartz，不需要像在javase中调用start()启动，而是springboot启动类中@EnableScheduling。  
+11.2.4        
+               
      
      
     
