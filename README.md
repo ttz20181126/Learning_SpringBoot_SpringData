@@ -255,7 +255,10 @@ JPASpecificationExecutor接口
 10.3 spring data redis测试  
      详情见：   ApplicationTests.testSpringDateRedis();  
      设置和获取redis键值对方法：redisTemplate.opsForValue().set("key","getech");  redisTemplate.opsForValue().get("key");  
-10.4        
+10.4 提取redis的链接参数  
+     redis配置类很多数据上线后需要修改，应提取出来放在配置文件中。  
+     详情见：application.properties与RedisConfig。注意：@ConfigurationProperties(prefix = "")可以将配置文件中相同前缀的内容创建一个实体。  
+10.5             
     
      
            
