@@ -426,7 +426,27 @@ JPASpecificationExecutor接口
     }
 ~~~   
    
+12.2 hibernate-hql查询  
+上述hibernateTemplate提供了主键查询，但是实际应用可能会出现其他条件。  
+hql:hibernate query language。    
+HQL的语法：将原来的sql语句的表和字段名称换成对象与属性名称。  
+~~~
+    List<Users> selectUsersByName(String name);
+    
+    @Override
+    public List<Users> selectUsersByName(String name){
+        //getCurrentSession:当前session必须要有事务边界，且只能处理唯一的一个事务，当事务提交或者回滚后session自动失效。
+        //openSession：每次都会打开一个新的session，假如每次使用多次，则获得的是不同session对象，使用完毕后我们需要手动的调用close()关闭session。
+        Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
+        Query qwuery = session.creatQuery("from Users where username = :paramGet");//类名不是表名
+        Query qwueryTemp = querey.setString("paramGet",name);
+        return qwueryTemp.list();
+    }
 
+    //测试类中添加方法测试...
+~~~  
+
+12.3 
                
      
      
