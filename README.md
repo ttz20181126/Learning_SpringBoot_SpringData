@@ -1,5 +1,6 @@
 # springBoot_start_with_lesson
-springboot入门教程
+springboot入门教程  
+https://pan.baidu.com/disk/main?from=oldversion#/index?category=all&path=%2FJAVA-%E8%8F%9C%E9%B8%9F%E5%88%B0%E7%8E%8B%E8%80%85%2Fspringboot%20%20springdata%E3%80%90%E7%99%BE%E6%88%98%E7%A8%8B%E5%BA%8F%E5%91%98%20%E5%BD%93%E5%89%8D%E5%AD%A6%E4%B9%A0%E3%80%91
 
 # note
 一、springboot访问静态资源
@@ -438,7 +439,7 @@ HQL的语法：将原来的sql语句的表和字段名称换成对象与属性�
         //getCurrentSession:当前session必须要有事务边界，且只能处理唯一的一个事务，当事务提交或者回滚后session自动失效。
         //openSession：每次都会打开一个新的session，假如每次使用多次，则获得的是不同session对象，使用完毕后我们需要手动的调用close()关闭session。
         Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
-        Query qwuery = session.creatQuery("from Users where username = :paramGet");//类名不是表名
+        Query querey = session.creatQuery("from Users where username = :paramGet");//类名不是表名
         Query qwueryTemp = querey.setString("paramGet",name);
         return qwueryTemp.list();
     }
@@ -446,7 +447,15 @@ HQL的语法：将原来的sql语句的表和字段名称换成对象与属性�
     //测试类中添加方法测试...
 ~~~  
 
-12.3 
+12.3 hibernate-SQL查询  
+~~~
+    public List<Users> selectUsersByNameUseSql(String name){
+        Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
+        Query querey = session.creatSQLQuery("select * from t_users where username = ?");
+        Query qwueryTemp = querey.addEntity(Users.class).setString(0,name);
+        return qwueryTemp.list();
+    }
+~~~
                
      
      
