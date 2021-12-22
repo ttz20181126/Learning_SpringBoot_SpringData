@@ -309,8 +309,124 @@ JPASpecificationExecutor接口
        scheduler设置这个重写的类job工厂。  
        详情见：QuartzDemo、MyAdaptableJobFactory、QuartzConfig.schedulerFactoryBean();  
        
-12.              
+12. spring data  
+12.1 spring整合hiberbate  
+     12.1.1 导入jar  
+     12.1.2 创建applicationContext.xml
+~~~
+    <!-- 配置读取properties文件的工具类 -->
+    <context:property-placeholder  location =  "classpath:jdbc.properties"/>
     
+    <!-- 配置c3p0数据库连接池 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="driverClass" value="${jdbc.driver.class}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    
+    <!-- 配置Hibernate的sessionFactory -->
+    <bean id="sessionFactory" calss="org.springframework.orm.hibernate5.localSessionFactory">
+        <property name="dataSource" ref = "dataSource" />
+    
+        //hibernateProperties属性，配置与hibernate相关的内容，如显示slq语句，开启正向工程
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    
+        //扫描实体所在的包
+        <property name="packageToScan">
+                <list>
+                    <value>com.bjsxt.pojo</value>          
+                </list>
+        </property>
+    </bean>
+    
+    <!-- 配置Hibernate的事务管理器 -->
+    <bean id="transcationManager" class="org.springframework.orm.hibernate5.HibernateTranscationManager">
+        <property name="sessionFactory"  ref ="sessionFactory"/>
+    </bean>
+    
+    <!-- 配置开启注解事务处理 -->
+    <tx:annotaion-driver transaction-manager="transcationManager" />
+    
+    <!-- 配置Spring Ioc的注解扫描 -->
+    <context:component-scan base-package="com.bjsxt"/>
+
+    <!-- 配置HibernateTemplate对象  避免在DaoImpl中extends HibernateDaoSupport -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name = "sessionFactory"  ref = "sessionFactory"     
+    </bean>
+ ~~~
+ 
+   12.1.3 创建jdbc.properties
+~~~
+    jdbc.url=jdbc:mysql://;pca;jpst:3306/test
+    jdbc.driver.class=com.mysql.jdbc.Driver
+    jdbc.username=root
+    jdbc.password=root
+~~~
+   
+   12.1.4 编写实体类
+~~~
+    @Entity
+    @Table(name="t_users")
+    public class Users implements Serializable{
+        @Id
+        @GeneratedValue(Strategy=GenerationType.IDENTITY) //主键 自动递增
+        @column(name = "userid")
+        private Integer userid;
+        
+        @column(name = "username")
+        private String username;
+        
+        @column(name = "userage")
+        private Integer userage;
+        
+        //getter and setter
+    }
+~~~   
+    
+   12.1.5 编写UsersDao接口和实现类  
+~~~
+    public interface UsersDao{
+        void insertUsers(Users users);
+    }
+    
+    @Repository
+    public class UsersDaoImpl  implements UsersDao{
+        @Autowired
+        private HibernateTemplate hibernateTemplate;
+        
+        @Override
+        public void insertUsers(Users users){
+            hibernateTemplate.save(users);
+        }
+    }
+~~~   
+
+   12.1.6 编写测试类
+~~~
+    @RunWith(SpringJunit4ClassRunner.calss)
+    @ContextConfiguration("classpath:applicationContext.xml")
+    public class UsersDapImplTest{
+        @Autowired
+        priavate UsersDao usersDao;
+        
+        @Test
+        @Transcational
+        @Rollback(false) //test类中默认自动回滚
+        public void testInsertUsers{
+            Users users = new Users("战三",20);//TODO 补充对应的构造方法。
+            this.userDao.insertUsers(users);
+        }
+    }
+~~~   
+   
+
                
      
      
