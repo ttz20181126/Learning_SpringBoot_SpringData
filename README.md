@@ -466,7 +466,46 @@ QBC将sql查询完全替代为对象和方法。
         c.add(Restrictions.eq("username",username));
         return c.list();
     }
+~~~  
+
+12.5 spring整合hibernate jpa  
+  jpa由sun公司提供了一对对于持久层操作的标准（接口 + 文档）  
+  hibernate是Gavin King开发的一套对于持久层操作的自动的orm框架。  
+  hibernate jpa是由hibernate3.2版本提供了基于jpa的标准的实现，提供了一套按照jpa标准来实现持久层开发的api。  
+  项目创建：  
+     在上面spring整合hibernate项目中导入jar : hibernate-entitymanager.jar  
+  修改配置文件：  
 ~~~
+    <!-- 去掉Hibernate的sessionFactory-->
+    <!-- Spring整合JPA配置EntityManagerFactory-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                    <!-- hibernate相关的属性的注入-->
+                    <!-- 配置数据库类型 -->
+                    <property name="database" value="MYSQL"/>
+                    <!-- 正向工程自动创建表 -->
+                    <property name="generateDdl" value="true"/>
+                    <!-- 显示执行的SQL -->
+                    <property name="showSql" value="true"/>
+                </bean>
+        </property>
+        <!--扫描实体的包-->
+        <property name="packagesToScan">
+            <list>
+                <value>com.bjsxt.pojo</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 修改事务管理器 -->
+    <bean id="transactionManager"  class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name= "entityManagerFactory" ref= "entityManagerFactory"/>
+    </bean>
+~~~
+     
+
                
      
      
