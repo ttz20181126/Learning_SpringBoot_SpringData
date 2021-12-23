@@ -455,6 +455,17 @@ HQL的语法：将原来的sql语句的表和字段名称换成对象与属性�
         Query qwueryTemp = querey.addEntity(Users.class).setString(0,name);
         return qwueryTemp.list();
     }
+~~~  
+
+12.4 hibernate-QBC查询  
+QBC将sql查询完全替代为对象和方法。  
+~~~
+    public List<Users> selectUsersByNameUseCriteria(String username){
+        Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
+        Criteria c = session.createCriteria(Users.class);
+        c.add(Restrictions.eq("username",username));
+        return c.list();
+    }
 ~~~
                
      
