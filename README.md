@@ -505,8 +505,24 @@ QBC将sql查询完全替代为对象和方法。
     </bean>
 ~~~
      
+12.6 hibernate-jpa的crud
+~~~
+    @Repository
+    public class UsersDaoImpl  implements UsersDao{
 
-               
+        //@Autowired 不可使用应为在spring容器中直接没有
+        //PersistenceContext(name="entityManagerFactory")
+        private EntityManager entityManager;
+        
+        @Override
+        public void insertUsers(Users users){
+            this.entityManager.persist(users);
+            //查询是find(),更新是merge(),删除着先查询再调用remove().
+        }
+    }
+~~~   
+
+12.7 hibernate-jpa的HQL语句            
      
      
     
