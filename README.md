@@ -522,7 +522,45 @@ QBC将sql查询完全替代为对象和方法。
     }
 ~~~   
 
-12.7 hibernate-jpa的HQL语句            
+12.7 hibernate-jpa的HQL语句  
+~~~
+    @Override
+    public List<Users> selectUsersByName(String username){
+       //参数用：参数名或者？都行 
+       return this.entityManager.createQuery(" from Users where username = :abc").setParameter("abc",username).getResultList();
+    }
+~~~  
+
+12.8 hibernate-jpa的SQL语句  
+~~~
+    @Override
+    public List<Users> selectUsersByNameUseSQL(String username){
+       //Hibernate Jpa中如果通过？方式来绑定参数，那么它的查数是从1开始的，而hibernate中是从0开始的。
+       return this.entityManager.createNativeQuery("select * from t_users where username = ?",Users.class).setParameter(1,username).getResultList();
+    }
+~~~  
+
+12.9 hibernate-jpa的QBC语句-criteria  
+~~~
+    public List<Users> selectUsersByNameUseCriteria(String username){
+        //CriteriaBuilder对象，创建一个CriteriaQuery，创建查询条件。
+        CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        //CriteriaQuery对象，执行查询的Criteria对象
+        CriteriaQuery<Users> query = builder.createQuery(Users.class);
+        //获取要查询的实体类的对象
+        Root<Users> root = query.from(Users.class);
+        //封装查询条件
+        Predicate cate = builder.equals(root.get("username"),username);
+        query.where(cate);
+        //执行查询
+        TypedQuery<Users> typeQuery = this.entityManager.createQuer(query);
+        return typeQuery.getResultList();
+    }
+~~~  
+
+  
+
+      
      
      
     
