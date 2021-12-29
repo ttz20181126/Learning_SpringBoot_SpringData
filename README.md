@@ -79,19 +79,19 @@ springboot的数据验证使用了Hibernate-validate校验框架
     但是这种颗粒度比较粗，所有的错误都跳转到一个页面。
 
 6.2 @ExceptionHandle注解处理异常  
-~~~
-@ExceptionHandler(value = {java.lang.NullPointerException.class})
-public ModelAndView nullExceptionHandler(Exception e){
-        ModelAndView mv = new  ModelAndView();
-        mv.addObject("error",e.toString());
-        mv.setViewName("error_null");
-        return mv;
- }
- //必须返回ModelAndView根据异常类型跳转对应页面。
-
-@ExceptionHandler(value = {java.lang.ArithmeticException.class})
-public ModelAndView arithmeticExceptionHandler(Exception e){}
-~~~
+   ~~~
+    @ExceptionHandler(value = {java.lang.NullPointerException.class})
+    public ModelAndView nullExceptionHandler(Exception e){
+            ModelAndView mv = new  ModelAndView();
+            mv.addObject("error",e.toString());
+            mv.setViewName("error_null");
+            return mv;
+     }
+     //必须返回ModelAndView根据异常类型跳转对应页面。
+    
+    @ExceptionHandler(value = {java.lang.ArithmeticException.class})
+    public ModelAndView arithmeticExceptionHandler(Exception e){}
+   ~~~
      
 6.3 @ControllerAdvice + @ExceptionHandle注解处理异常  
 但是6.2的处理只针对当前controller的异常类有用。另外一个controller如果空指针异常仍然跳转到error.html，不是error_null.html.  
@@ -100,61 +100,61 @@ public ModelAndView arithmeticExceptionHandler(Exception e){}
 6.4 配置SimpleMappingExceptionResolver处理异常  
 对6.3的简化，6.3的处理上，需要对每一种异常编写对应的一个异常处理方式，  
 6.4则将异常类和视图建立一个异常处理信息集合。一个方法搞定。
-~~~
-@Configuration
-public class ResolverException {
-    @Bean
-    public SimpleMappingExceptionResolver getSimpleMappingExceptionResolver(){
-            SimpleMappingExceptionResolver smer = new SimpleMappingExceptionResolver();
-            Properties mappings = new Properties();
-            mappings.put("java.lang.NullPointerException","error_conf_null");
-            mappings.put("java.lang.ArithmeticException","error_conf_arithmetic");
-            smer.setExceptionMappings(mappings);
-            return smer;
-    }
-~~~
+   ~~~
+    @Configuration
+    public class ResolverException {
+        @Bean
+        public SimpleMappingExceptionResolver getSimpleMappingExceptionResolver(){
+                SimpleMappingExceptionResolver smer = new SimpleMappingExceptionResolver();
+                Properties mappings = new Properties();
+                mappings.put("java.lang.NullPointerException","error_conf_null");
+                mappings.put("java.lang.ArithmeticException","error_conf_arithmetic");
+                smer.setExceptionMappings(mappings);
+                return smer;
+        }
+   ~~~
 但是这个处理方式，无法给视图放回异常信息，6.3可以。  
 
 6.5 自定义HandlerExceptionResolver。  
 上述6.4简化了处理方式，但是不能返回异常信息给视图，  
-~~~
-@Configuration
-public class HandlerExceptionResolverController implements HandlerExceptionResolver {
-
-    @Override
-    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception ex) {
-        ModelAndView mv = new ModelAndView();
-        if(ex instanceof ArithmeticException){
-            mv.setViewName("error_conf_arithmetic");
+   ~~~
+    @Configuration
+    public class HandlerExceptionResolverController implements HandlerExceptionResolver {
+    
+        @Override
+        public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception ex) {
+            ModelAndView mv = new ModelAndView();
+            if(ex instanceof ArithmeticException){
+                mv.setViewName("error_conf_arithmetic");
+            }
+            if(ex instanceof NullPointerException){
+                mv.setViewName("error_conf_null");
+            }
+            mv.addObject("errorMessage", ex.toString());
+            return mv;
         }
-        if(ex instanceof NullPointerException){
-            mv.setViewName("error_conf_null");
-        }
-        mv.addObject("errorMessage", ex.toString());
-        return mv;
     }
-}
-~~~
+   ~~~
 
 7 springboot热部署  
 7.1 SpringLoader  
 7.1.1 SpringLoader方式一  
 pom中添加插件：
-~~~
-<plugins>
-    <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>springloaded</artifactId>
-                <version>1.2.5.RELEASE</version>
-            </dependency>
-        </dependencies>
-    </plugin>
- </plugins>
-~~~
+   ~~~
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>springloaded</artifactId>
+                    <version>1.2.5.RELEASE</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+     </plugins>
+   ~~~
 此时要插件工作，不能简单的启动启动类，需要使用命令：spring-boot:run.
 注意：这种方式只能热部署java代码，但是对前端页面无能为力。  
       在此重启运行，会报端口抢占。因为热部署程序在系统后台以进程的形式进行。  
@@ -163,23 +163,23 @@ pom中添加插件：
  7.1.2 SpringLoader方式二（在项目中使用jar包的形式）  
  将SpringLoader的jar放在项目的lib包下，方式一需要以命令方式启动，这里:  
  启动方式选择run configuration,设定启动参数vm arguments:
- ~~~
--javaagent:\lib\springloaded-1.2.5.RELEASE.jar -noverify
-~~~
+   ~~~
+    -javaagent:\lib\springloaded-1.2.5.RELEASE.jar -noverify
+   ~~~
 这种再启动就不会像方式一存在端口抢占的问题。
 
 7.2 DevTools  
 SpringLoader与DevTools的区别：  
    SpringLoader 在部署项目时使用的是热部署的方式，DevTools采用的是重新部署的方式。  
 导入依赖：  
-~~~
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-devtools</artifactId>
-    &lt;!&ndash;其他项目依赖这个项目，不向下传递&ndash;&gt;
-    <optional>true</optional>
-</dependency>
-~~~
+   ~~~
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        &lt;!&ndash;其他项目依赖这个项目，不向下传递&ndash;&gt;
+        <optional>true</optional>
+    </dependency>
+   ~~~
 修改代码，可以看到控制台会自动重新启动，这就是在重新部署，  
 和springloader的热部署就不同，因为重新部署所以对页面也是有用的。  
 
@@ -310,11 +310,11 @@ JPASpecificationExecutor接口
        scheduler设置这个重写的类job工厂。  
        详情见：QuartzDemo、MyAdaptableJobFactory、QuartzConfig.schedulerFactoryBean();  
        
-12. spring data  
+12. spring 项目集成hibernate、hibernate-jpa、spring data jpa  
 12.1 spring整合hiberbate  
      12.1.1 导入jar  
      12.1.2 创建applicationContext.xml
-~~~
+   ~~~
     <!-- 配置读取properties文件的工具类 -->
     <context:property-placeholder  location =  "classpath:jdbc.properties"/>
     
@@ -352,27 +352,27 @@ JPASpecificationExecutor接口
     </bean>
     
     <!-- 配置开启注解事务处理 -->
-    <tx:annotaion-driver transaction-manager="transcationManager" />
+    <tx:annotaion-driver transaction-manager="transcationManager"/>
     
     <!-- 配置Spring Ioc的注解扫描 -->
     <context:component-scan base-package="com.bjsxt"/>
 
     <!-- 配置HibernateTemplate对象  避免在DaoImpl中extends HibernateDaoSupport -->
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
-        <property name = "sessionFactory"  ref = "sessionFactory"     
+        <property name = "sessionFactory"  ref = "sessionFactory"/>   
     </bean>
- ~~~
+   ~~~
  
    12.1.3 创建jdbc.properties
-~~~
-    jdbc.url=jdbc:mysql://;pca;jpst:3306/test
-    jdbc.driver.class=com.mysql.jdbc.Driver
-    jdbc.username=root
-    jdbc.password=root
-~~~
+   ~~~
+        jdbc.url=jdbc:mysql://;pca;jpst:3306/test
+        jdbc.driver.class=com.mysql.jdbc.Driver
+        jdbc.username=root
+        jdbc.password=root
+   ~~~
    
    12.1.4 编写实体类
-~~~
+   ~~~
     @Entity
     @Table(name="t_users")
     public class Users implements Serializable{
@@ -389,10 +389,10 @@ JPASpecificationExecutor接口
         
         //getter and setter
     }
-~~~   
+   ~~~   
     
    12.1.5 编写UsersDao接口和实现类  
-~~~
+   ~~~
     public interface UsersDao{
         void insertUsers(Users users);
     }
@@ -407,10 +407,10 @@ JPASpecificationExecutor接口
             hibernateTemplate.save(users);
         }
     }
-~~~   
+   ~~~   
 
    12.1.6 编写测试类
-~~~
+   ```
     @RunWith(SpringJunit4ClassRunner.calss)
     @ContextConfiguration("classpath:applicationContext.xml")
     public class UsersDapImplTest{
@@ -425,13 +425,13 @@ JPASpecificationExecutor接口
             this.userDao.insertUsers(users);
         }
     }
-~~~   
-   
-12.2 hibernate-hql查询  
-上述hibernateTemplate提供了主键查询，但是实际应用可能会出现其他条件。  
-hql:hibernate query language。    
-HQL的语法：将原来的sql语句的表和字段名称换成对象与属性名称。  
-~~~
+   ```
+
+   12.1.7 hibernate-hql查询  
+   上述hibernateTemplate提供了主键查询，但是实际应用可能会出现其他条件。  
+   hql:hibernate query language。    
+   HQL的语法：将原来的sql语句的表和字段名称换成对象与属性名称。    
+   ``` 
     List<Users> selectUsersByName(String name);
     
     @Override
@@ -443,70 +443,69 @@ HQL的语法：将原来的sql语句的表和字段名称换成对象与属性�
         Query qwueryTemp = querey.setString("paramGet",name);
         return qwueryTemp.list();
     }
-
     //测试类中添加方法测试...
-~~~  
+   ```
 
-12.3 hibernate-SQL查询  
-~~~
+   12.1.8 hibernate-SQL查询  
+   ~~~ 
     public List<Users> selectUsersByNameUseSql(String name){
         Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
         Query querey = session.creatSQLQuery("select * from t_users where username = ?");
         Query qwueryTemp = querey.addEntity(Users.class).setString(0,name);
         return qwueryTemp.list();
     }
-~~~  
+   ~~~  
 
-12.4 hibernate-QBC查询  
-QBC将sql查询完全替代为对象和方法。  
-~~~
+   12.1.9 hibernate-QBC查询  
+   QBC将sql查询完全替代为对象和方法。  
+   ~~~
     public List<Users> selectUsersByNameUseCriteria(String username){
         Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
         Criteria c = session.createCriteria(Users.class);
         c.add(Restrictions.eq("username",username));
         return c.list();
     }
-~~~  
+   ~~~  
 
-12.5 spring整合hibernate jpa  
+12.2 spring整合hibernate jpa  
   jpa由sun公司提供了一对对于持久层操作的标准（接口 + 文档）  
   hibernate是Gavin King开发的一套对于持久层操作的自动的orm框架。  
   hibernate jpa是由hibernate3.2版本提供了基于jpa的标准的实现，提供了一套按照jpa标准来实现持久层开发的api。  
-  项目创建：  
+12.2.1 项目创建：  
      在上面spring整合hibernate项目中导入jar : hibernate-entitymanager.jar  
   修改配置文件：  
-~~~
-    <!-- 去掉Hibernate的sessionFactory-->
-    <!-- Spring整合JPA配置EntityManagerFactory-->
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="jpaVendorAdapter">
-                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                    <!-- hibernate相关的属性的注入-->
-                    <!-- 配置数据库类型 -->
-                    <property name="database" value="MYSQL"/>
-                    <!-- 正向工程自动创建表 -->
-                    <property name="generateDdl" value="true"/>
-                    <!-- 显示执行的SQL -->
-                    <property name="showSql" value="true"/>
-                </bean>
-        </property>
-        <!--扫描实体的包-->
-        <property name="packagesToScan">
-            <list>
-                <value>com.bjsxt.pojo</value>
-            </list>
-        </property>
-    </bean>
-
-    <!-- 修改事务管理器 -->
-    <bean id="transactionManager"  class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name= "entityManagerFactory" ref= "entityManagerFactory"/>
-    </bean>
-~~~
+   ~~~
+        <!-- 去掉Hibernate的sessionFactory-->
+        <!-- Spring整合JPA配置EntityManagerFactory-->
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="dataSource" ref="dataSource"/>
+            <property name="jpaVendorAdapter">
+                    <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                        <!-- hibernate相关的属性的注入-->
+                        <!-- 配置数据库类型 -->
+                        <property name="database" value="MYSQL"/>
+                        <!-- 正向工程自动创建表 -->
+                        <property name="generateDdl" value="true"/>
+                        <!-- 显示执行的SQL -->
+                        <property name="showSql" value="true"/>
+                    </bean>
+            </property>
+            <!--扫描实体的包-->
+            <property name="packagesToScan">
+                <list>
+                    <value>com.bjsxt.pojo</value>
+                </list>
+            </property>
+        </bean>
+    
+        <!-- 修改事务管理器 -->
+        <bean id="transactionManager"  class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name= "entityManagerFactory" ref= "entityManagerFactory"/>
+        </bean>
+   ~~~
      
-12.6 hibernate-jpa的crud
-~~~
+12.2.2 hibernate-jpa的crud
+   ~~~
     @Repository
     public class UsersDaoImpl  implements UsersDao{
 
@@ -520,28 +519,28 @@ QBC将sql查询完全替代为对象和方法。
             //查询是find(),更新是merge(),删除着先查询再调用remove().
         }
     }
-~~~   
+   ~~~   
 
-12.7 hibernate-jpa的HQL语句  
-~~~
+12.2.3 hibernate-jpa的HQL语句  
+   ~~~
     @Override
     public List<Users> selectUsersByName(String username){
        //参数用：参数名或者？都行 
        return this.entityManager.createQuery(" from Users where username = :abc").setParameter("abc",username).getResultList();
     }
-~~~  
+   ~~~  
 
-12.8 hibernate-jpa的SQL语句  
-~~~
+12.2.4 hibernate-jpa的SQL语句  
+   ~~~
     @Override
     public List<Users> selectUsersByNameUseSQL(String username){
        //Hibernate Jpa中如果通过？方式来绑定参数，那么它的查数是从1开始的，而hibernate中是从0开始的。
        return this.entityManager.createNativeQuery("select * from t_users where username = ?",Users.class).setParameter(1,username).getResultList();
     }
-~~~  
+   ~~~  
 
-12.9 hibernate-jpa的QBC语句-criteria  
-~~~
+12.2.5 hibernate-jpa的QBC语句-criteria  
+   ~~~
     public List<Users> selectUsersByNameUseCriteria(String username){
         //CriteriaBuilder对象，创建一个CriteriaQuery，创建查询条件。
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -556,8 +555,13 @@ QBC将sql查询完全替代为对象和方法。
         TypedQuery<Users> typeQuery = this.entityManager.createQuer(query);
         return typeQuery.getResultList();
     }
-~~~  
+   ~~~  
 
+12.3 Spring data jpa  
+   spring data jpa是spring data项目下的一个模块，体用了一套基于jpa标准的操作数据库的简化方案，底层默认的是依赖hibernate jpa实现的  
+   技术特点：我们只需要定义接口并集成spring data jpa中所提供的接口就可以了，不需要编写接口实现类。  
+12.3.1 spring整合spring data jpa项目搭建  
+      
   
 
       
