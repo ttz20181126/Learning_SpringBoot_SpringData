@@ -558,9 +558,58 @@ JPASpecificationExecutor接口
    ~~~  
 
 12.3 Spring data jpa  
-   spring data jpa是spring data项目下的一个模块，体用了一套基于jpa标准的操作数据库的简化方案，底层默认的是依赖hibernate jpa实现的  
-   技术特点：我们只需要定义接口并集成spring data jpa中所提供的接口就可以了，不需要编写接口实现类。  
+   spring data jpa是spring data项目下的一个模块，体用了一套基于jpa标准的操作数据库的简化方案，底层默认的是依赖hibernate jpa实现的。  
+   技术特点：我们只需要定义接口并继承spring data jpa中所提供的接口就可以了，不需要编写接口实现类。  
 12.3.1 spring整合spring data jpa项目搭建  
+   复用spring集成hibernate-jpa的项目。添加额外的jar：spring data jpa、slf4j。  
+   修改配置文件：    
+       -applicationContext.xml头部中添加新的约束:spring-jpa.xsd;  
+       -在后面添加
+       ```
+       <!-- spring data jpa 的配置 -->
+       <!-- base-package 扫描dao接口所在的包 -->
+       <jpa: repositories base-package="com.bjsxt.dao"/>
+      ```  
+   编写dao
+     ```
+       public interfacte UsersDao extends JpaRepository<Users,Integer>{ }
+        //测试类中:直接调用userDao.save(users);
+     ```
+12.3.2  spring data jpa接口继承结构  
+    上述搭建时继承了JpaRepository接口，接口下实现了很多基础方法,它在spring-data-jpa的jar下；   
+    JpaRepository继承了PagingAndSortingRepository接口，它实现了分页和排序,它在spring-data-commons.jar;  
+    PagingAndSortingRepository继承了CrudRepository接口，它实现了对数据库的crud；  
+    CrudRepository接口继承了Repository接口，Repository接口只是一个标识接口。  
+    JpaRepository-->PagingAndSortingRepository(分页排序)-->CrudRepository(crud)-->Repository(标识接口)  
+    JpaRepository对从父接口返回值做了适配处理，比如将Iterable转化成List。  
+    spring-data-jpa.jar下还有一个JpaSpecificationExecutor提供了一个自定义查询条件以及分页的接口。  
+12.3.3 spring data jpa底层原理  
+    上述编程直接调用userDao.save()方法，其方式是从父类接口中继承来的。在测试类中:  
+    打印下注入的this.userDao对象：org.springframework.data.jpa.repository.support.SimpleJpaRepository@fba8bf.  
+    打印注入的类型this.userDao.getClass()：class.com.sun.proxy.$Proxy29.可以看出代理对象是基于JDK的动态代理方法创建的。 
+    查看源码SimpleJpaRepository实现了JpaRepository、JpaSpecificationExecutor，接口的实现类。可以自己实现：
+    ```
+    @Persistence(name="entityManagerFactory")
+    private EntityManager em;
+    @Test
+    public void test(){
+       JpaRepositoryFactory factory  = new JpaRepositoryFactory(em);
+       //getRepository(UsersDao.class);可以帮助我们为接口生成实现类，而这个实现类是SimpleJpaRepository，
+       //要求该接口必须要是继承Repository接口。
+       UsersDao ud = factory.getRepository(UsersDao.class);
+    }
+    ```  
+12.3.4     
+    
+    
+
+       
+    
+    
+    
+     
+    
+    
       
   
 
