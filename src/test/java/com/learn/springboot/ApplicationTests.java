@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -18,13 +19,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -76,6 +77,12 @@ public class ApplicationTests {
 
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
+
+    @Autowired
+    private EntityManager entityManager;
+
+    //@Autowired
+    //private SessionFactory sessionFactory;
 
 
     @Test
@@ -525,5 +532,24 @@ public class ApplicationTests {
         User value = (User)this.redisTemplate.opsForValue().get("user2");
         System.out.println(value);
 
+    }
+
+
+    /**
+     * 证明springboot中注入的是entityManager不是sessionFactory.
+     */
+    @Test
+    public void testEntityManagerSourceFrom(){
+        //org.springframework.data.jpa.repository.support.SimpleJpaRepository@368e7d3a
+        System.out.println(this.userMappingJpaRepository);
+        //class com.sun.proxy.$Proxy128
+        System.out.println(this.userMappingJpaRepository.getClass());
+
+        JpaRepositoryFactory factory  = new JpaRepositoryFactory(entityManager);
+        //getRepository(UsersDao.class);可以帮助我们为接口生成实现类，而这个实现类是SimpleJpaRepository，
+        //要求该接口必须要是继承Repository接口。
+        UserMappingJpaRepository ud = factory.getRepository(UserMappingJpaRepository.class);
+        System.out.println(ud);//org.springframework.data.jpa.repository.support.SimpleJpaRepository@eb77241
+        System.out.println(ud.getClass());//class com.sun.proxy.$Proxy123
     }
 }

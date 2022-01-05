@@ -599,7 +599,9 @@ JPASpecificationExecutor接口
        UsersDao ud = factory.getRepository(UsersDao.class);
     }
     ```  
-12.3.4     
+    注：在spring项目中配置文件指定了使用EntityManager替换sessionFactory，见12.2.1，springboot项目不做配置。  
+        但是springboot默认就是引入的entityManager，验证参看ApplicationTests.testEntityManagerSourceFrom();
+12.3.4  
     
     
 
