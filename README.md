@@ -195,7 +195,7 @@ SpringLoader与DevTools的区别：
 Repository接口  
     提供了基于方法名称命名的查询方式;提供了基于@Query注解查询与更新.  
     详情见:StudentJpaRepositoryByName.class与ApplicationTests.class.testJpaRepositoryByMethodName();  
-    详情见:StudentJpaRepositoryQueryAnnotation与ApplicationTests.testQueryAnnotation();  
+    详情见:StudentJpaRepositoryQueryAnnotation.class与ApplicationTests.testQueryAnnotation();  
 CrudRepository接口  
      CrudRepository接口继承了Repository接口。
      详情见StudentJpaCrudRepository & ApplicationTests.testJpaCrudRepository();  
@@ -601,25 +601,64 @@ JPASpecificationExecutor接口
     ```  
     注：在spring项目中配置文件指定了使用EntityManager替换sessionFactory，见12.2.1，springboot项目不做配置。  
         但是springboot默认就是引入的entityManager，验证参看ApplicationTests.testEntityManagerSourceFrom();
-12.3.4  
-    
-    
+12.3.4 Repository接口-方法命名规则查询     
+    Repository接口是spring data jpa中为我们提供的所有接口中的顶层接口，  
+    Repository提供了两种查询方式的支持：1）基于方法名称命令规则查询 2）基于@Query注解查询。   
+    同springboot集成spring data jpa【8.3章节】。StudentJpaRepositoryByName.class。   
+    规则：findBy（关键字） + 属性名称（属性名称的首字母大写）+ 查询条件（首字母大写,默认相等 Is、Equal、Or...);   
+    如：findByUsername();findByUsernameIs,findByUsernameLike;findByUsernameAndAge;findByUsernameAndAgeGreaterThanEqual.   
+12.3.5 Repository接口@Query查询JPQL语句   
+    在dao接口中直接使用@Query(@value="hql语句"),@value可以不要，直接hql语句(类名替代表名)  
+    spring中集成spring data jpa和springboot中集成在使用中是一样的,参看StudentJpaRepositoryQueryAnnotation.class.queryByNameUseHQL();     
+12.3.6 Repository接口@Query查询SQL语句  
+    同springboot集成spring data jpa，见StudentJpaRepositoryQueryAnnotation.class.queryByNameUseSql();   
+12.3.7 Repository接口@Query更新操作  
+    同springboot集成spring data jpa，见StudentJpaRepositoryQueryAnnotation.class.updateUsersNameById();    
+12.3.8 CrudRepository接口的使用    
+    dao接口extends CrudRepository<StudentJpa,Integer>;  
+    @Test中直接调用dao的save方法保存，此时不用添加事务@Transcational注解，因为CrudRepository的save实现接口已经添加了。  
+12.3.9 PagingAndSortingRepository接口-分页处理    
 
-       
-    
-    
-    
-     
-    
-    
-      
-  
+12.3.10 PagingAndSortingRepository接口-排序处理   
 
-      
-     
-     
+12.3.11 JpaRepository接口的使用  
+
+12.3.12 JpaSpecificationExecutor接口-单条件查询   
+
+12.3.13 JpaSpecificationExecutor接口-多条件查询-方式一     
+
+12.3.14 JpaSpecificationExecutor接口-多条件查询-方式二    
+
+12.3.15 JpaSpecificationExecutor接口-多条件查询-分页处理    
+
+12.3.16 JpaSpecificationExecutor接口-多条件查询-排序处理    
+
+12.3.17 JpaSpecificationExecutor接口-多条件查询-分页+排序    
+
+12.3.18 自定义Repository接口     
+
+12.3.19 创建一对一关联关系   
+
+12.3.20 操作一对一关联关系   
+    假设用户和角色一对一,
+    ```
     
-     
-           
+    //角色类中
+    @OneToOne(mappedBy("roles"))
+    private Users user;
+    
+    //用户类中
+    @OneToOne
+    @JoinColumn(name="roles_id") //维护一个外键
+    private Roles roles;
+    
+    //测试类中就各自new对象，然后user.setRoles(),role.setUsers()维护关系。     
+    ```
+12.3.21 创建一对多关联关系   
+
+12.3.22 操作一对多关联关系   
+
+12.3.23 创建多对多关联关系   
+
+12.3.24 操作多对多关联关系   
    
-    

@@ -420,7 +420,7 @@ public class ApplicationTests {
         System.out.println("rolename:" + roleMapping.getRoleName());
         Set<MenusMapping> menus = roleMapping.getMenus();
         for (MenusMapping menusMapping : menus){
-            System.out.println(menus);
+            System.out.println(menusMapping);
         }
 
     }
