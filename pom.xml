@@ -9,9 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.learn</groupId>
-    <artifactId>springBoot</artifactId>
+    <!--项目iml文件名&&项目坐标-->
+    <artifactId>Learning_SpringBoot_SpringData</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>start-with-lesson</name>
+    <!--右侧maven项目结构显示的名称-->
+    <name>Learning_SpringBoot_SpringData</name>
     <description>Demo project for Spring Boot</description>
 
     <!--springboot2.0以下的版本，jdk使用1.7 -->
