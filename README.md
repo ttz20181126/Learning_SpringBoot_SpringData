@@ -611,12 +611,15 @@ JPASpecificationExecutor接口
     在dao接口中直接使用@Query(@value="hql语句"),@value可以不要，直接hql语句(类名替代表名)  
     spring中集成spring data jpa和springboot中集成在使用中是一样的,参看StudentJpaRepositoryQueryAnnotation.class.queryByNameUseHQL();     
 12.3.6 Repository接口@Query查询SQL语句  
+    JPA默认是使用HQL，使用sql查询时候需要nativeQuery属性转化成使用sql，    
     同springboot集成spring data jpa，见StudentJpaRepositoryQueryAnnotation.class.queryByNameUseSql();   
 12.3.7 Repository接口@Query更新操作  
-    同springboot集成spring data jpa，见StudentJpaRepositoryQueryAnnotation.class.updateUsersNameById();    
+    同springboot集成spring data jpa，见StudentJpaRepositoryQueryAnnotation.class.updateUsersNameById();   
+    使用@Modifying注解，在@Test方法中，更新需要加事物注解，测试方法中会默认回滚，为了观测，还需要加@rollback注解，修改为false。   
 12.3.8 CrudRepository接口的使用    
     dao接口extends CrudRepository<StudentJpa,Integer>;  
-    @Test中直接调用dao的save方法保存，此时不用添加事务@Transcational注解，因为CrudRepository的save实现接口已经添加了。  
+    @Test中直接调用dao的save方法保存，此时不用添加事务@Transcational注解，因为CrudRepository的save实现接口已经添加了。   
+    详情见ApplicationTests.testJpaCrudRepository();
 12.3.9 PagingAndSortingRepository接口-分页处理    
 
 12.3.10 PagingAndSortingRepository接口-排序处理   

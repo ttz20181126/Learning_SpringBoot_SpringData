@@ -170,12 +170,14 @@ public class ApplicationTests {
      */
     @Test
     public void testJpaCrudRepository(){
+        //保存
         StudentJpa studentJpa = new StudentJpa();
         studentJpa.setAddress("北京是朝阳区");
         studentJpa.setAge(11);
         studentJpa.setName("么么哒c");
         studentJpaCrudRepository.save(studentJpa);
 
+        //更新
         //save也是更新也是保存
         StudentJpa studentJpa2 = new StudentJpa();
         studentJpa2.setId(3);
@@ -184,8 +186,14 @@ public class ApplicationTests {
         studentJpa2.setName("么么哒a");
         studentJpaCrudRepository.save(studentJpa2);
 
+        //查询，通过id查询
         //Optional<StudentJpa> byId = studentJpaCrudRepository.findById(4);
+
+        //查询list
         //Iterable<StudentJpa> all = studentJpaCrudRepository.findAll();
+        //List<StudentJpa> list = (List<StudentJpa>)studentJpaCrudRepository.findAll();
+
+        //删除
         //studentJpaCrudRepository.deleteById(4);
     }
 

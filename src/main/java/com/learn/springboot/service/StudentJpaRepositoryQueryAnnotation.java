@@ -23,7 +23,8 @@ public interface StudentJpaRepositoryQueryAnnotation extends Repository<StudentJ
 
 
     /**
-     * JPA默认是使用HQL需要nativeQuery属性
+     * JPA默认是使用HQL，使用sql查询时候需要nativeQuery属性
+     * nativeQuery默认false，表示不对value值做转义。
      * @param name
      * @return
      */
