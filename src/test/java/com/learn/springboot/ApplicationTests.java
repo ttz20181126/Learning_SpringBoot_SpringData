@@ -25,9 +25,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * springboot测试类
@@ -44,8 +42,11 @@ import java.util.Set;
 //@SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {Application.class})
-@Ignore //Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.2:test (default-test) on project Learning_SpringBoot_SpringData
 public class ApplicationTests {
+
+    //Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.2:test (default-test) on project Learning_SpringBoot_SpringData
+    //类上面加注解让maven打包跳过测试类，或者pom中配置，skipTrue为true。注解会让后续真是执行测试方法时候无法执行直接滤过。推荐pom中配置。
+    //@Ignore
 
     @Autowired
     private StudentService studentService;
@@ -169,6 +170,8 @@ public class ApplicationTests {
 
     /**
      * springboot集成spring data jpa  之 CrudRepository接口测试
+     *
+     * CrudRepository的save()实现有transcation，所以测试类中不用
      */
     @Test
     public void testJpaCrudRepository(){
@@ -188,17 +191,38 @@ public class ApplicationTests {
         studentJpa2.setName("么么哒a");
         studentJpaCrudRepository.save(studentJpa2);
 
-        //查询，通过id查询
-        //Optional<StudentJpa> byId = studentJpaCrudRepository.findById(4);
+        //查询-通过id查询
+        Optional<StudentJpa> byId = studentJpaCrudRepository.findById(4);
 
         //查询list
-        //Iterable<StudentJpa> all = studentJpaCrudRepository.findAll();
-        //List<StudentJpa> list = (List<StudentJpa>)studentJpaCrudRepository.findAll();
+        Iterable<StudentJpa> all = studentJpaCrudRepository.findAll();
+        Iterator<StudentJpa> iterator = all.iterator();
+        while (iterator.hasNext()){
+            StudentJpa next = iterator.next();
+            System.out.println(next.getName());
+        }
+        List<StudentJpa> list = (List<StudentJpa>)studentJpaCrudRepository.findAll();
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).getName());
+        }
 
         //删除
         //studentJpaCrudRepository.deleteById(4);
     }
 
+
+    /***
+     * hibernate数据的临时、游离、持久化
+     * session关闭，数据持久化，不调用save也自动保存到数据库。
+     * findById在实现中没有加事务，就不会对象持久化，test默认方法回滚，需要加上rollback，这样就可以演示现象。
+     */
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void testJpaCrudRepository02(){
+        StudentJpa studentJpa = studentJpaCrudRepository.findById(4).get();
+        studentJpa.setName("持久化");
+    }
 
     /**
      * springboot集成spring data jpa  之 PagingAndSortingRepository 接口测试

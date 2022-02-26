@@ -619,10 +619,22 @@ JPASpecificationExecutor接口
 12.3.8 CrudRepository接口的使用    
     dao接口extends CrudRepository<StudentJpa,Integer>;  
     @Test中直接调用dao的save方法保存，此时不用添加事务@Transcational注解，因为CrudRepository的save实现接口已经添加了。   
-    详情见ApplicationTests.testJpaCrudRepository();
-12.3.9 PagingAndSortingRepository接口-分页处理    
-
+    详情见ApplicationTests.testJpaCrudRepository();  
+    hibernate对象的游离、临时、持久化在session关闭时对象持久化自动保存到数据库，详情见ApplicationTests.testJpaCrudRepository02(); 
+12.3.9 PagingAndSortingRepository接口-分页处理   
+    接口继承PagingAndSortingRepository，提供了Iterable<T> findAll(Sort var1)排序接口与Page<T> findAll(Pageable var1)分页接口；  
+    分页：    
+    ```
+    Pageable pageable = new PageRequest(0, 2);
+        Page<StudentJpa> all = this.studentJPagingAndSortingRepository.findAll(pageable);
+        System.out.println("总条数:" + all.getTotalElements()  + ",总页数： " + all.getTotalPages());
+        List<StudentJpa> content = all.getContent();
+        for(StudentJpa s : content){
+        System.out.println("当前页数据 : " + s);
+    }
+    ```   
 12.3.10 PagingAndSortingRepository接口-排序处理   
+     
 
 12.3.11 JpaRepository接口的使用  
 
