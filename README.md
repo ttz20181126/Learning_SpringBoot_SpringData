@@ -633,11 +633,24 @@ JPASpecificationExecutor接口
         System.out.println("当前页数据 : " + s);
     }
     ```   
+    详情见ApplicationTests.testPagingAndSortingRepository();   
 12.3.10 PagingAndSortingRepository接口-排序处理   
-     
-
-12.3.11 JpaRepository接口的使用  
-
+     排序可以多列也可以单列排序，利用sort对象的；
+     ```
+     //单列
+     Sort singleSort = new Sort(Direction.DESC,"age");  
+     //多列
+     Order orderMul1 = new Order(Direction.DESC,"id");
+     Order orderMul2 = new Order(Direction.DESC,"age");
+     Sort sort = new Sort(orderMul1,orderMul2);
+     ```   
+     详情见ApplicationTests.testPagingAndSortingRepository();      
+12.3.11 JpaRepository接口的使用   
+     JpaRepository接口时我们开发时使用最多的接口，其特点时可以帮助我们将其他接口的方法的返回值做适配处理，可以使得我们开发时更方便的使用这些方法。  
+     ```
+      List<StudentJpa> all = studentJpaRepository.findAll();
+     ```  
+     详情见ApplicationTests.testJpaRepository();   
 12.3.12 JpaSpecificationExecutor接口-单条件查询   
 
 12.3.13 JpaSpecificationExecutor接口-多条件查询-方式一     

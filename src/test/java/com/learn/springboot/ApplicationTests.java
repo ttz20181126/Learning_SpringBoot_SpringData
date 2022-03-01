@@ -231,10 +231,24 @@ public class ApplicationTests {
     public void testPagingAndSortingRepository(){
 
         //********************************1.sort排序方法**************************
-        //order定义了排序规则
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"id");
-        //sort对象封装了排序规则,多个排序规则可以装多个order.
-        Sort sort = new Sort(order);
+        /***
+         * 单列排序
+         * sort：该对象封装了排序规则以及指定的排序字段-字段的属性来表示；
+         * direction：排序规则；
+         * properties：指定做排序的属性。
+         */
+        Sort singleSort = new Sort(Sort.Direction.DESC,"age");
+        List<StudentJpa> singList = (List<StudentJpa>)this.studentJPagingAndSortingRepository.findAll(singleSort);
+        for(StudentJpa jpa : singList){
+            System.out.println("迭代结果：" + jpa);
+        }
+
+        /**
+         * 多列排序
+         */
+        Sort.Order orderMul1 = new Sort.Order(Sort.Direction.DESC,"id");
+        Sort.Order orderMul2 = new Sort.Order(Sort.Direction.DESC,"age");
+        Sort sort = new Sort(orderMul1,orderMul2);
         List<StudentJpa> list = (List<StudentJpa>)this.studentJPagingAndSortingRepository.findAll(sort);
         for(StudentJpa jpa : list){
             System.out.println("迭代结果：" + jpa);
@@ -264,14 +278,19 @@ public class ApplicationTests {
 
     /**
      * springboot集成spring data jpa  之  JpaRepository
+     *
+     * JpaRepository接口时我们开发时使用最多的接口，其特点时可以帮助我们将其他接口的方法的返回值做适配处理，
+     * 可以使得我们开发时更方便的使用这些方法。
      */
     @Test
     public void testJpaRepository(){
         Sort.Order order = new Sort.Order(Sort.Direction.DESC,"id");
         Sort sort = new Sort(order);
-        //不用再像使用PagingAndSortingRepository强转
+        //不用再像使用PagingAndSortingRepository或者CrudRepository强转
         List<StudentJpa> all = studentJpaRepository.findAll(sort);
-        System.out.println(all);
+        for(StudentJpa s1 : all){
+            System.out.println("当前页数据 : " + s1);
+        }
     }
 
     /**
