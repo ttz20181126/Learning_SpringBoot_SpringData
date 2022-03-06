@@ -652,11 +652,16 @@ JPASpecificationExecutor接口
      ```  
      详情见ApplicationTests.testJpaRepository();   
 12.3.12 JpaSpecificationExecutor接口-单条件查询   
-
-12.3.13 JpaSpecificationExecutor接口-多条件查询-方式一     
-
+     完成多条件查询，并且支持分页与排序。  
+     接口类继承（Java中类单继承，接口多继承）JpaRepository<StudentJpa,Integer>, JpaSpecificationExecutor<StudentJpa>，见StudentJPASpecificationExecutor类，  
+     JpaSpecificationExecutor不能单独使用，需要配合jpa中其他接口一起使用，因为它没有继承任何jpa接口，但是spring data jpa的原理就是通过继承Repository的接口生成接口的代理对象。  
+     测试类见：ApplicationTests.testStudentJPASpecificationExecutor()的第一种单条件测试。  
+12.3.13 JpaSpecificationExecutor接口-多条件查询-方式一    
+     用List<Predicate>来封装查询条件，用criteriaBuilder.and(list.toArray(arr))来指定多条件的组合方式为and。  
+     详情见：ApplicationTests.testStudentJPASpecificationExecutor()多条件查询方式一。   
 12.3.14 JpaSpecificationExecutor接口-多条件查询-方式二    
-
+     笔记
+     详情见：ApplicationTests.testStudentJPASpecificationExecutor()多条件查询（其他方式）方式二。  
 12.3.15 JpaSpecificationExecutor接口-多条件查询-分页处理    
 
 12.3.16 JpaSpecificationExecutor接口-多条件查询-排序处理    

@@ -303,8 +303,9 @@ public class ApplicationTests {
         Specification<StudentJpa> spec = new Specification<StudentJpa>() {
 
             /**
-             * @param root   查询对象的属性封装。
-             * @param criteriaQuery   封装我们要执行的查询中的各个部分的信息。select、from、order
+             * Predicate 定义了查询条件。
+             * @param root   根对象，查询对象的属性封装。
+             * @param criteriaQuery   封装我们要执行的查询中的各个部分的信息。select、from、order，定义了一个基本的查询，一般不使用。
              * @param criteriaBuilder  查询条件的构造器，定义不同的查询条件。
              * @return
              */
@@ -322,7 +323,7 @@ public class ApplicationTests {
 
 
 
-        //****************************************2.多条件查询*****************************************************
+        //****************************************2.多条件查询  方式一*****************************************************
         //where name = '张三' and age = 11
         Specification<StudentJpa> spec2 = new Specification<StudentJpa>() {
             @Override
@@ -331,6 +332,7 @@ public class ApplicationTests {
                 List<Predicate> list = new ArrayList<>();
                 list.add(criteriaBuilder.equal(root.get("name"), "张三"));
                 list.add(criteriaBuilder.equal(root.get("age"), 11));
+                //此时查询条件没有任何关系
                 Predicate[] arr = new Predicate[list.size()];
                 return criteriaBuilder.and(list.toArray(arr));
             }
@@ -341,7 +343,7 @@ public class ApplicationTests {
         }
 
 
-        //****************************************3.多条件查询(其他写法)****************************************
+        //****************************************3.多条件查询(其他写法)   方式二****************************************
         //where name = '张三' and age = 11
         Specification<StudentJpa> spec3 = new Specification<StudentJpa>() {
             @Override
