@@ -663,10 +663,11 @@ JPASpecificationExecutor接口:
      用List<Predicate>来封装查询条件，用criteriaBuilder.and(list.toArray(arr))来指定多条件的组合方式为and。  
      详情见：ApplicationTests.testStudentJPASpecificationExecutor()多条件查询方式一。   
 12.3.14 JpaSpecificationExecutor接口-多条件查询-方式二    
-     条件构建器CriteriaBuilder直接链式拼接查询条件，  
+     条件构建器CriteriaBuilder直接链式拼接查询条件， criteriaBuilder.and(criteriaBuilder.equal(root.get("name"),"张三"),criteriaBuilder.equal(root.get("age"),11));   
      详情见：ApplicationTests.testStudentJPASpecificationExecutor()多条件查询（其他方式）方式二。  
-12.3.15 JpaSpecificationExecutor接口-多条件查询-分页处理    
-         
+12.3.15 JpaSpecificationExecutor接口-多条件查询-分页处理   
+     findAll()根据提示可以传条件和分页参数，分别拼接查询条件和分页参数即可；  
+     参看ApplicationTests.testSpecificationPage().  
 12.3.16 JpaSpecificationExecutor接口-多条件查询-排序处理    
 
 12.3.17 JpaSpecificationExecutor接口-多条件查询-分页+排序    

@@ -399,6 +399,32 @@ public class ApplicationTests {
 
     }
 
+    /***
+     *  where name like '王%' limit 0，2.
+     *  拼接查询条件并做分页处理
+     *  springboot集成spring data jpa  之  JPASpecificationExecutor的条件分页查询
+     */
+    @Test
+    public void testSpecificationPage(){
+        //条件
+        Specification<StudentJpa> spec = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return  criteriaBuilder.like(root.get("name").as(String.class),"王%");
+            }
+        };
+        //分页  Pageable为接口，找到其实现类。
+        Pageable pageable = new PageRequest(0,2);
+        //参数为条件和分页参数，可利用参数提示反过来去推理入参的编写
+        Page<StudentJpa> page = this.studentJPASpecificationExecutor.findAll(spec,pageable);
+        System.out.println("total：" + page.getTotalElements());
+        System.out.println("pageNumber:" + page.getTotalElements());
+        List<StudentJpa> content = page.getContent();
+        for (StudentJpa studentJpa : content){
+            System.out.println(studentJpa);
+        }
+    }
+
 
     /**
      * spring data jpa的一对多关系的保存
