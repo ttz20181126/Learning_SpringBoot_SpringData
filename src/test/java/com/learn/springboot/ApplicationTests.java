@@ -479,6 +479,7 @@ public class ApplicationTests {
      */
     @Test
     public void testDefineRepository(){
+        System.out.println("自定义repository接口：");
         StudentJpa studentJpaById = studentJpaDefineDao.findStudentJpaById(5);
         System.out.println(studentJpaById);
     }
