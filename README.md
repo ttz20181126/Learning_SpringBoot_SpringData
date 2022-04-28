@@ -668,13 +668,19 @@ JPASpecificationExecutor接口:
 12.3.15 JpaSpecificationExecutor接口-多条件查询-分页处理   
      findAll()根据提示可以传条件和分页参数，分别拼接查询条件和分页参数即可；  
      参看ApplicationTests.testSpecificationPage().  
-12.3.16 JpaSpecificationExecutor接口-多条件查询-排序处理    
-
+12.3.16 JpaSpecificationExecutor接口-多条件查询-排序处理   
+     findAll()可以传入查询条件和排序规则；  
+     参看ApplicationTests.testSpecificationOrderBy().    
 12.3.17 JpaSpecificationExecutor接口-多条件查询-分页+排序    
-
+     分页对象中，除了传入当前页，和每页显示数量，还有一个构造方法，直接还可以传入排序规则。    
+     参看ApplicationTests.testSpecificationPageOrderBy().    
 12.3.18 自定义Repository接口     
-
+     首先自定义接口：StudentJpaDefineRepository；    
+     然后使用接口，继承接口：extends JpaRepository<StudentJpaDefineDao,Integer>, JpaSpecificationExecutor<StudentJpa>,StudentJpaDefineRepository；  
+     再然后实现接口，详情见StudentJpaDefineDaoImpl类；  
+     测试类见：ApplicationTests.testDefineRepository().   
 12.3.19 创建一对一关联关系   
+     
 
 12.3.20 操作一对一关联关系   
     假设用户和角色一对一,

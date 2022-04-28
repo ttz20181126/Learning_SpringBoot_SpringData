@@ -87,6 +87,9 @@ public class ApplicationTests {
     //@Autowired
     //private SessionFactory sessionFactory;
 
+    @Autowired
+    private StudentJpaDefineDao studentJpaDefineDao;
+
 
     @Test
     public void contextLoads() {
@@ -425,6 +428,60 @@ public class ApplicationTests {
         }
     }
 
+    /***
+     *  where name like '王%' order by id desc.
+     *  拼接查询条件、降序排列
+     *  springboot集成spring data jpa  之  JPASpecificationExecutor的条件/排序查询
+     */
+    @Test
+    public void testSpecificationOrderBy(){
+        //条件
+        Specification<StudentJpa> spec = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return  criteriaBuilder.like(root.get("name").as(String.class),"王%");
+            }
+        };
+        //排序
+        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        List<StudentJpa> content = this.studentJPASpecificationExecutor.findAll(spec,sort);
+        for (StudentJpa studentJpa : content){
+            System.out.println(studentJpa);
+        }
+    }
+
+    /***
+     *  where name like '王%' order by id desc limit 0,2.
+     *  拼接查询条件、降序、分页排列
+     *  springboot集成spring data jpa  之  JPASpecificationExecutor的条件/排序/分页 查询
+     */
+    @Test
+    public void testSpecificationPageOrderBy(){
+        //排序
+        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        //分页的定义---发现可以传入排序
+        Pageable pageable = new PageRequest(0,2,sort);
+        //条件
+        Specification<StudentJpa> spec = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return  criteriaBuilder.like(root.get("name").as(String.class),"王%");
+            }
+        };
+        Page<StudentJpa> page = this.studentJPASpecificationExecutor.findAll(spec,pageable);
+        for (StudentJpa studentJpa : page.getContent()){
+            System.out.println(studentJpa);
+        }
+    }
+
+    /**
+     * 自定义Repository
+     */
+    @Test
+    public void testDefineRepository(){
+        StudentJpa studentJpaById = studentJpaDefineDao.findStudentJpaById(5);
+        System.out.println(studentJpaById);
+    }
 
     /**
      * spring data jpa的一对多关系的保存
