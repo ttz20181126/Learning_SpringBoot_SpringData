@@ -1,6 +1,8 @@
 package com.learn.springboot.pojo;
 
 
+import org.apache.ibatis.annotations.One;
+
 import javax.persistence.*;
 
 /**
@@ -26,6 +28,9 @@ public class UserMapping {
     @Column(name = "address")
     private String address;
 
+    //@OneToOne
+    //@JoinColumn(name = "role_id") //维护一个外键盘
+    //private RoleMapping roleMapping;
 
     @ManyToOne(cascade = CascadeType.PERSIST)   //级联操作报错用户的时候保存角色。
     @JoinColumn(name = "role_id")  //维护外键

@@ -679,8 +679,47 @@ JPASpecificationExecutor接口:
      然后使用接口，继承接口：extends JpaRepository<StudentJpaDefineDao,Integer>, JpaSpecificationExecutor<StudentJpa>,StudentJpaDefineRepository；  
      再然后实现接口，详情见StudentJpaDefineDaoImpl类；  
      测试类见：ApplicationTests.testDefineRepository().   
-12.3.19 创建一对一关联关系   
-     
+12.3.19 创建一对一关联关系    
+     一对一的关系,只需要有一方存在这边的一个外键。
+   ~~~
+   @Entity
+   @Table(name = "role_mapping")
+   public class RoleMapping {
+        @Id //主键
+        @GeneratedValue(strategy = GenerationType.IDENTITY) //自增策略
+        @Column(name = "role_id")
+        private Integer roleId;
+    
+        @Column(name = "role_name")
+        private String roleName;
+    
+        //告诉有关联，匹配到对方的一个属性就好。
+        @OneToOne(mappedBy = "roleMapping")
+        private UserMapping userMapping;
+   }
+    
+    @Entity
+    @Table(name = "user_mapping")
+    public class UserMapping {
+        @Id //主键
+        @GeneratedValue(strategy = GenerationType.IDENTITY) //自增策略
+        @Column(name = "user_id")
+        private Integer userId;
+    
+        @Column(name = "name")
+        private String name;
+    
+        @Column(name = "age")
+        private Integer age;
+    
+        @Column(name = "address")
+        private String address;
+
+        @OneToOne
+        @JoinColumn(name = "role_id")    //维护一个外键
+        private RoleMapping roleMapping; 
+    }    
+   ~~~~
 
 12.3.20 操作一对一关联关系   
     假设用户和角色一对一,

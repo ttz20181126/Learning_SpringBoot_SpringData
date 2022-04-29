@@ -14,16 +14,16 @@ import java.util.Set;
 @Table(name = "role_mapping")
 public class RoleMapping {
 
-
     @Id //主键
     @GeneratedValue(strategy = GenerationType.IDENTITY) //自增策略
     @Column(name = "role_id")
     private Integer roleId;
 
-
     @Column(name = "role_name")
     private String roleName;
 
+    //@OneToOne(mappedBy = "roleMapping")
+    //private UserMapping userMapping;
 
     @OneToMany(mappedBy = "roleMapping")
     private Set<UserMapping> users = new HashSet<>();
