@@ -755,6 +755,23 @@ JPASpecificationExecutor接口:
    ~~~
    观察控制台执行查看的SQL可知，级联查询，spring data jpa使用的是left join操作，直接两张表一起查询了。   
 12.3.23 创建多对多关联关系   
-
+    角色和菜单，多对多的关系，一个角色多个菜单，一个菜单多个角色拥有；  
+    多对多的关系需要中间表来建立关系，通过@JoinTable来指定中间表
+   ~~~
+    //角色类中
+    @ManyToMany()
+    @JoinTable(name="t_role_menus",joinColumns = @JoinColumn(name="role_id"),inverseJoinColumns = @JoinColumn(name = "menus_id"))
+    private Set<MenusMapping> menus = new HashSet<>();
+    
+    //菜单类中
+    //mappedBy配置在另外多的一方的对象实例化名称
+    @ManyToMany(mappedBy = "menus")
+    private Set<RoleMapping> roles = new HashSet<>();
+   ~~~ 
 12.3.24 操作多对多关联关系   
+     级联保存的时候，需要在角色类的@ManyToMany后面添加cascade = CascadeType.PERSIST；  
+     执行查询的时候，发现报错，找不到session，因为在查询时候，查询一方，session关闭，需要@ManyToMany添加fetch = FetchType.EAGER；  
+     测试方法详情见:ApplicationTests.testManyToManySave(); ApplicationTests.testManyToManyFind()方法；  
+    
+13.
    
