@@ -723,8 +723,7 @@ JPASpecificationExecutor接口:
 
 12.3.20 操作一对一关联关系   
     假设用户和角色一对一,
-    ```
-    
+   ```
     //角色类中
     @OneToOne(mappedBy("roles"))
     private Users user;
@@ -735,11 +734,26 @@ JPASpecificationExecutor接口:
     private Roles roles;
     
     //测试类中就各自new对象，然后user.setRoles(),role.setUsers()维护关系。     
-    ```
+   ```
 12.3.21 创建一对多关联关系   
-
+    假设一个用户一个角色，一个角色有多个用户   
+   ~~~
+    //用户类
+    @ManyToOne()
+    @JoinColumn(name = "roles_id")
+    private Role roles;
+    
+    //角色类
+    @OneToMany(mappedBy = "roles")
+    private Set<Users> users = new HashSet<>();
+   ~~~
 12.3.22 操作一对多关联关系   
-
+   保存和查询分别参看：ApplicationTests的testOneToManySave() & testOneToManyFind()；   
+   保存的级联操作需要在用户类中的：  
+   ~~~
+     @ManyToOne后添加(cascade = CascadeType.PERSIST
+   ~~~
+   观察控制台执行查看的SQL可知，级联查询，spring data jpa使用的是left join操作，直接两张表一起查询了。   
 12.3.23 创建多对多关联关系   
 
 12.3.24 操作多对多关联关系   
