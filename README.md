@@ -155,7 +155,7 @@ pom中添加插件：
         </plugin>
      </plugins>
    ~~~
-此时要插件工作，不能简单的启动启动类，需要使用命令：spring-boot:run.
+此时要插件工作，不能简单的启动启动类，需要使用命令：spring-boot:run.  
 注意：这种方式只能热部署java代码，但是对前端页面无能为力。  
       在此重启运行，会报端口抢占。因为热部署程序在系统后台以进程的形式进行。  
       需要打开任务管理器，关闭java.exe的进程，然后才可以重启。  
@@ -192,21 +192,21 @@ SpringLoader与DevTools的区别：
     引入依赖，修改配置文件，StudentJpa.class使用@Table @Id等注解，建立映射。ApplicationTests.class测试类中测试。  
 
 8.3 spring data jpa提供的核心接口  
-Repository接口  
+Repository接口:    
     提供了基于方法名称命名的查询方式;提供了基于@Query注解查询与更新.  
     详情见:StudentJpaRepositoryByName.class与ApplicationTests.class.testJpaRepositoryByMethodName();  
     详情见:StudentJpaRepositoryQueryAnnotation.class与ApplicationTests.testQueryAnnotation();  
-CrudRepository接口  
+CrudRepository接口:   
      CrudRepository接口继承了Repository接口。
      详情见StudentJpaCrudRepository & ApplicationTests.testJpaCrudRepository();  
-PagingAndSortingRepository接口  
+PagingAndSortingRepository接口:   
      该接口提供了分页与排序的操作。注意：该接口继承了CrudRepository接口。  
      可以利用Sort和Order排序、利用pageRequest分页，混搭来进行分页时排序。  
      详情见StudentJPagingAndSortingRepository.class & ApplicationTests.testPagingAndSortingRepository();   
-JpaRepository接口  
+JpaRepository接口:    
       该接口继承了PagingAndSortingRepository接口。开发最常用，间接继承的接口多。  
-      详情见StudentJpaRepository & ApplicationTests.testJpaRepository();
-JPASpecificationExecutor接口  
+      详情见StudentJpaRepository & ApplicationTests.testJpaRepository();  
+JPASpecificationExecutor接口:    
       该接口主要是提供了多条件查询的支持，并且可以在查询中添加分页与排序。  
       JPASpecificationExecutor是单独存在的，完全独立。所以一般利用接口多继承，也继承上面的其他接口；
       详情见StudentJPASpecificationExecutor & ApplicationTests.testStudentJPASpecificationExecutor();  
@@ -215,7 +215,8 @@ JPASpecificationExecutor接口
 8.4.1 一对多的关联关系和级联操作    
       角色和用户：一个角色多个用户，一个用户只属于一个角色。  
       关系映射类详情见：UserMapping & RoleMapping。  
-      映射关系操作见：UserMappingJpaRepository & ApplicationTests.testOneToManySave()和testOneToManyFind()一对多操作;
+      映射关系操作见：UserMappingJpaRepository & ApplicationTests.testOneToManySave()和testOneToManyFind()一对多操作;  
+
 8.4.2 多对多的关联关系和级联操作  
       角色和菜单：多对多  
       关系映射见：RoleMapping & MenusMapping  
@@ -230,10 +231,12 @@ JPASpecificationExecutor接口
      在application.properties中配置ehcache的配置文件位置。  
      启动类添加注解开启ehcache。实现方法中添加@Cacheable注解，      
      详情见:ApplicationTests.testEhcache()  
+
 9.2 @Ehcache的key属性  
     @Cacheable(name="指定配置文件的策略",key=“指定缓存的key")  
     key如果相同就使用缓存  
-    详情见ApplicationTests.testEhcacheKeyField();  
+    详情见ApplicationTests.testEhcacheKeyField();   
+
 9.3 @CacheEvict注解的使用  
     @CacheEvict(value = "defineBySelf",allEntries = true)  //清除以defineBySelf策略存储的缓存。  
     两次查询中添加一次，使用缓存，查询结果一致，需要再保存按钮中添加清除缓存。  
@@ -282,9 +285,9 @@ JPASpecificationExecutor接口
       可以在普通javase项目使用。创建普通maven项目不用依赖springboot；  
       pom引入依赖GAV:org.quartz-scheduler  quartz  2.2.1   
       创建类QuartzDemo implements Job,实现execute方法，这个方法就是任务调度执行的方法。随意打印一句话，  
-      测试类中main方法中:
-      ```
-      public static void main(String[] args){
+      测试类中main方法中:  
+  ~~~ 
+       public static void main(String[] args){
             JobDetail job = JobBuilder.newJob(QuartzDemo.class).build();
             /**
             **两种方法：
@@ -297,9 +300,9 @@ JPASpecificationExecutor接口
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.scheduleJob(job,scheduler);
             scheduler.start();
-      }
-      ```    
-      启动main~~~！ 
+       }
+  ~~~ 
+      启动main！   
 11.2.3  springboot整合Quartz  
        导入jar：quartz、spring-context-support、spring-tx;   
        编写实现Job接口的定时执行任务；  
@@ -564,17 +567,17 @@ JPASpecificationExecutor接口
    复用spring集成hibernate-jpa的项目。添加额外的jar：spring data jpa、slf4j。  
    修改配置文件：    
        -applicationContext.xml头部中添加新的约束:spring-jpa.xsd;  
-       -在后面添加
-       ```
+       -在后面添加  
+   ~~~
        <!-- spring data jpa 的配置 -->
        <!-- base-package 扫描dao接口所在的包 -->
        <jpa: repositories base-package="com.bjsxt.dao"/>
-      ```  
+   ~~~
    编写dao
-     ```
+   ```
        public interfacte UsersDao extends JpaRepository<Users,Integer>{ }
         //测试类中:直接调用userDao.save(users);
-     ```
+   ```
 12.3.2  spring data jpa接口继承结构  
     上述搭建时继承了JpaRepository接口，接口下实现了很多基础方法,它在spring-data-jpa的jar下；   
     JpaRepository继承了PagingAndSortingRepository接口，它实现了分页和排序,它在spring-data-commons.jar;  
@@ -588,7 +591,7 @@ JPASpecificationExecutor接口
     打印下注入的this.userDao对象：org.springframework.data.jpa.repository.support.SimpleJpaRepository@fba8bf.  
     打印注入的类型this.userDao.getClass()：class.com.sun.proxy.$Proxy29.可以看出代理对象是基于JDK的动态代理方法创建的。 
     查看源码SimpleJpaRepository实现了JpaRepository、JpaSpecificationExecutor，接口的实现类。可以自己实现：
-    ```
+   ```
     @Persistence(name="entityManagerFactory")
     private EntityManager em;
     @Test
@@ -598,9 +601,9 @@ JPASpecificationExecutor接口
        //要求该接口必须要是继承Repository接口。
        UsersDao ud = factory.getRepository(UsersDao.class);
     }
-    ```  
-    注：在spring项目中配置文件指定了使用EntityManager替换sessionFactory，见12.2.1，springboot项目不做配置。  
-        但是springboot默认就是引入的entityManager，验证参看ApplicationTests.testEntityManagerSourceFrom();
+   ```  
+   注：在spring项目中配置文件指定了使用EntityManager替换sessionFactory，见12.2.1，springboot项目不做配置。  
+        但是springboot默认就是引入的entityManager，验证参看ApplicationTests.testEntityManagerSourceFrom();  
 12.3.4 Repository接口-方法命名规则查询     
     Repository接口是spring data jpa中为我们提供的所有接口中的顶层接口，  
     Repository提供了两种查询方式的支持：1）基于方法名称命令规则查询 2）基于@Query注解查询。   
@@ -624,7 +627,7 @@ JPASpecificationExecutor接口
 12.3.9 PagingAndSortingRepository接口-分页处理   
     接口继承PagingAndSortingRepository，提供了Iterable<T> findAll(Sort var1)排序接口与Page<T> findAll(Pageable var1)分页接口；  
     分页：    
-    ```
+   ```
     Pageable pageable = new PageRequest(0, 2);
         Page<StudentJpa> all = this.studentJPagingAndSortingRepository.findAll(pageable);
         System.out.println("总条数:" + all.getTotalElements()  + ",总页数： " + all.getTotalPages());
@@ -632,32 +635,95 @@ JPASpecificationExecutor接口
         for(StudentJpa s : content){
         System.out.println("当前页数据 : " + s);
     }
-    ```   
+   ```   
+   详情见ApplicationTests.testPagingAndSortingRepository();   
 12.3.10 PagingAndSortingRepository接口-排序处理   
-     
-
-12.3.11 JpaRepository接口的使用  
-
+     排序可以多列也可以单列排序，利用sort对象的；
+   ```
+     //单列
+     Sort singleSort = new Sort(Direction.DESC,"age");  
+     //多列
+     Order orderMul1 = new Order(Direction.DESC,"id");
+     Order orderMul2 = new Order(Direction.DESC,"age");
+     Sort sort = new Sort(orderMul1,orderMul2);
+   ```   
+   详情见ApplicationTests.testPagingAndSortingRepository();      
+12.3.11 JpaRepository接口的使用   
+     JpaRepository接口时我们开发时使用最多的接口，其特点时可以帮助我们将其他接口的方法的返回值做适配处理，可以使得我们开发时更方便的使用这些方法。  
+   ```
+      List<StudentJpa> all = studentJpaRepository.findAll();
+   ```  
+   详情见ApplicationTests.testJpaRepository();   
 12.3.12 JpaSpecificationExecutor接口-单条件查询   
-
-12.3.13 JpaSpecificationExecutor接口-多条件查询-方式一     
-
+     完成多条件查询，并且支持分页与排序。  
+     接口类继承（Java中类单继承，接口多继承）JpaRepository<StudentJpa,Integer>, JpaSpecificationExecutor<StudentJpa>，见StudentJPASpecificationExecutor类，  
+     JpaSpecificationExecutor不能单独使用，需要配合jpa中其他接口一起使用，因为它没有继承任何jpa接口，但是spring data jpa的原理就是通过继承Repository的接口生成接口的代理对象。  
+     测试类见：ApplicationTests.testStudentJPASpecificationExecutor()的第一种单条件测试。  
+12.3.13 JpaSpecificationExecutor接口-多条件查询-方式一    
+     用List<Predicate>来封装查询条件，用criteriaBuilder.and(list.toArray(arr))来指定多条件的组合方式为and。  
+     详情见：ApplicationTests.testStudentJPASpecificationExecutor()多条件查询方式一。   
 12.3.14 JpaSpecificationExecutor接口-多条件查询-方式二    
-
-12.3.15 JpaSpecificationExecutor接口-多条件查询-分页处理    
-
-12.3.16 JpaSpecificationExecutor接口-多条件查询-排序处理    
-
+     条件构建器CriteriaBuilder直接链式拼接查询条件， criteriaBuilder.and(criteriaBuilder.equal(root.get("name"),"张三"),criteriaBuilder.equal(root.get("age"),11));   
+     详情见：ApplicationTests.testStudentJPASpecificationExecutor()多条件查询（其他方式）方式二。  
+12.3.15 JpaSpecificationExecutor接口-多条件查询-分页处理   
+     findAll()根据提示可以传条件和分页参数，分别拼接查询条件和分页参数即可；  
+     参看ApplicationTests.testSpecificationPage().  
+12.3.16 JpaSpecificationExecutor接口-多条件查询-排序处理   
+     findAll()可以传入查询条件和排序规则；  
+     参看ApplicationTests.testSpecificationOrderBy().    
 12.3.17 JpaSpecificationExecutor接口-多条件查询-分页+排序    
-
+     分页对象中，除了传入当前页，和每页显示数量，还有一个构造方法，直接还可以传入排序规则。    
+     参看ApplicationTests.testSpecificationPageOrderBy().    
 12.3.18 自定义Repository接口     
+     首先自定义接口：StudentJpaDefineRepository；    
+     然后使用接口，继承接口：extends JpaRepository<StudentJpaDefineDao,Integer>, JpaSpecificationExecutor<StudentJpa>,StudentJpaDefineRepository；  
+     再然后实现接口，详情见StudentJpaDefineDaoImpl类；  
+     测试类见：ApplicationTests.testDefineRepository().   
+12.3.19 创建一对一关联关系    
+     一对一的关系,只需要有一方存在这边的一个外键。
+   ~~~
+   @Entity
+   @Table(name = "role_mapping")
+   public class RoleMapping {
+        @Id //主键
+        @GeneratedValue(strategy = GenerationType.IDENTITY) //自增策略
+        @Column(name = "role_id")
+        private Integer roleId;
+    
+        @Column(name = "role_name")
+        private String roleName;
+    
+        //告诉有关联，匹配到对方的一个属性就好。
+        @OneToOne(mappedBy = "roleMapping")
+        private UserMapping userMapping;
+   }
+    
+    @Entity
+    @Table(name = "user_mapping")
+    public class UserMapping {
+        @Id //主键
+        @GeneratedValue(strategy = GenerationType.IDENTITY) //自增策略
+        @Column(name = "user_id")
+        private Integer userId;
+    
+        @Column(name = "name")
+        private String name;
+    
+        @Column(name = "age")
+        private Integer age;
+    
+        @Column(name = "address")
+        private String address;
 
-12.3.19 创建一对一关联关系   
+        @OneToOne
+        @JoinColumn(name = "role_id")    //维护一个外键
+        private RoleMapping roleMapping; 
+    }    
+   ~~~~
 
 12.3.20 操作一对一关联关系   
     假设用户和角色一对一,
-    ```
-    
+   ```
     //角色类中
     @OneToOne(mappedBy("roles"))
     private Users user;
@@ -668,12 +734,44 @@ JPASpecificationExecutor接口
     private Roles roles;
     
     //测试类中就各自new对象，然后user.setRoles(),role.setUsers()维护关系。     
-    ```
+   ```
 12.3.21 创建一对多关联关系   
-
+    假设一个用户一个角色，一个角色有多个用户   
+   ~~~
+    //用户类
+    @ManyToOne()
+    @JoinColumn(name = "roles_id")
+    private Role roles;
+    
+    //角色类
+    @OneToMany(mappedBy = "roles")
+    private Set<Users> users = new HashSet<>();
+   ~~~
 12.3.22 操作一对多关联关系   
-
+   保存和查询分别参看：ApplicationTests的testOneToManySave() & testOneToManyFind()；   
+   保存的级联操作需要在用户类中的：  
+   ~~~
+     @ManyToOne后添加(cascade = CascadeType.PERSIST
+   ~~~
+   观察控制台执行查看的SQL可知，级联查询，spring data jpa使用的是left join操作，直接两张表一起查询了。   
 12.3.23 创建多对多关联关系   
-
+    角色和菜单，多对多的关系，一个角色多个菜单，一个菜单多个角色拥有；  
+    多对多的关系需要中间表来建立关系，通过@JoinTable来指定中间表
+   ~~~
+    //角色类中
+    @ManyToMany()
+    @JoinTable(name="t_role_menus",joinColumns = @JoinColumn(name="role_id"),inverseJoinColumns = @JoinColumn(name = "menus_id"))
+    private Set<MenusMapping> menus = new HashSet<>();
+    
+    //菜单类中
+    //mappedBy配置在另外多的一方的对象实例化名称
+    @ManyToMany(mappedBy = "menus")
+    private Set<RoleMapping> roles = new HashSet<>();
+   ~~~ 
 12.3.24 操作多对多关联关系   
+     级联保存的时候，需要在角色类的@ManyToMany后面添加cascade = CascadeType.PERSIST；  
+     执行查询的时候，发现报错，找不到session，因为在查询时候，查询一方，session关闭，需要@ManyToMany添加fetch = FetchType.EAGER；  
+     测试方法详情见:ApplicationTests.testManyToManySave(); ApplicationTests.testManyToManyFind()方法；  
+    
+13.
    

@@ -88,6 +88,9 @@ public class ApplicationTests {
     //@Autowired
     //private SessionFactory sessionFactory;
 
+    @Autowired
+    private StudentJpaDefineDao studentJpaDefineDao;
+
 
     @Test
     public void contextLoads() {
@@ -232,10 +235,24 @@ public class ApplicationTests {
     public void testPagingAndSortingRepository(){
 
         //********************************1.sort排序方法**************************
-        //order定义了排序规则
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"id");
-        //sort对象封装了排序规则,多个排序规则可以装多个order.
-        Sort sort = new Sort(order);
+        /***
+         * 单列排序
+         * sort：该对象封装了排序规则以及指定的排序字段-字段的属性来表示；
+         * direction：排序规则；
+         * properties：指定做排序的属性。
+         */
+        Sort singleSort = new Sort(Sort.Direction.DESC,"age");
+        List<StudentJpa> singList = (List<StudentJpa>)this.studentJPagingAndSortingRepository.findAll(singleSort);
+        for(StudentJpa jpa : singList){
+            System.out.println("迭代结果：" + jpa);
+        }
+
+        /**
+         * 多列排序
+         */
+        Sort.Order orderMul1 = new Sort.Order(Sort.Direction.DESC,"id");
+        Sort.Order orderMul2 = new Sort.Order(Sort.Direction.DESC,"age");
+        Sort sort = new Sort(orderMul1,orderMul2);
         List<StudentJpa> list = (List<StudentJpa>)this.studentJPagingAndSortingRepository.findAll(sort);
         for(StudentJpa jpa : list){
             System.out.println("迭代结果：" + jpa);
@@ -265,14 +282,19 @@ public class ApplicationTests {
 
     /**
      * springboot集成spring data jpa  之  JpaRepository
+     *
+     * JpaRepository接口时我们开发时使用最多的接口，其特点时可以帮助我们将其他接口的方法的返回值做适配处理，
+     * 可以使得我们开发时更方便的使用这些方法。
      */
     @Test
     public void testJpaRepository(){
         Sort.Order order = new Sort.Order(Sort.Direction.DESC,"id");
         Sort sort = new Sort(order);
-        //不用再像使用PagingAndSortingRepository强转
+        //不用再像使用PagingAndSortingRepository或者CrudRepository强转
         List<StudentJpa> all = studentJpaRepository.findAll(sort);
-        System.out.println(all);
+        for(StudentJpa s1 : all){
+            System.out.println("当前页数据 : " + s1);
+        }
     }
 
     /**
@@ -285,8 +307,9 @@ public class ApplicationTests {
         Specification<StudentJpa> spec = new Specification<StudentJpa>() {
 
             /**
-             * @param root   查询对象的属性封装。
-             * @param criteriaQuery   封装我们要执行的查询中的各个部分的信息。select、from、order
+             * Predicate 定义了查询条件。
+             * @param root   根对象，查询对象的属性封装。
+             * @param criteriaQuery   封装我们要执行的查询中的各个部分的信息。select、from、order，定义了一个基本的查询，一般不使用。
              * @param criteriaBuilder  查询条件的构造器，定义不同的查询条件。
              * @return
              */
@@ -304,7 +327,7 @@ public class ApplicationTests {
 
 
 
-        //****************************************2.多条件查询*****************************************************
+        //****************************************2.多条件查询  方式一*****************************************************
         //where name = '张三' and age = 11
         Specification<StudentJpa> spec2 = new Specification<StudentJpa>() {
             @Override
@@ -313,6 +336,7 @@ public class ApplicationTests {
                 List<Predicate> list = new ArrayList<>();
                 list.add(criteriaBuilder.equal(root.get("name"), "张三"));
                 list.add(criteriaBuilder.equal(root.get("age"), 11));
+                //此时查询条件没有任何关系
                 Predicate[] arr = new Predicate[list.size()];
                 return criteriaBuilder.and(list.toArray(arr));
             }
@@ -323,7 +347,7 @@ public class ApplicationTests {
         }
 
 
-        //****************************************3.多条件查询(其他写法)****************************************
+        //****************************************3.多条件查询(其他写法)   方式二****************************************
         //where name = '张三' and age = 11
         Specification<StudentJpa> spec3 = new Specification<StudentJpa>() {
             @Override
@@ -379,6 +403,87 @@ public class ApplicationTests {
 
     }
 
+    /***
+     *  where name like '王%' limit 0，2.
+     *  拼接查询条件并做分页处理
+     *  springboot集成spring data jpa  之  JPASpecificationExecutor的条件分页查询
+     */
+    @Test
+    public void testSpecificationPage(){
+        //条件
+        Specification<StudentJpa> spec = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return  criteriaBuilder.like(root.get("name").as(String.class),"王%");
+            }
+        };
+        //分页  Pageable为接口，找到其实现类。
+        Pageable pageable = new PageRequest(0,2);
+        //参数为条件和分页参数，可利用参数提示反过来去推理入参的编写
+        Page<StudentJpa> page = this.studentJPASpecificationExecutor.findAll(spec,pageable);
+        System.out.println("total：" + page.getTotalElements());
+        System.out.println("pageNumber:" + page.getTotalElements());
+        List<StudentJpa> content = page.getContent();
+        for (StudentJpa studentJpa : content){
+            System.out.println(studentJpa);
+        }
+    }
+
+    /***
+     *  where name like '王%' order by id desc.
+     *  拼接查询条件、降序排列
+     *  springboot集成spring data jpa  之  JPASpecificationExecutor的条件/排序查询
+     */
+    @Test
+    public void testSpecificationOrderBy(){
+        //条件
+        Specification<StudentJpa> spec = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return  criteriaBuilder.like(root.get("name").as(String.class),"王%");
+            }
+        };
+        //排序
+        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        List<StudentJpa> content = this.studentJPASpecificationExecutor.findAll(spec,sort);
+        for (StudentJpa studentJpa : content){
+            System.out.println(studentJpa);
+        }
+    }
+
+    /***
+     *  where name like '王%' order by id desc limit 0,2.
+     *  拼接查询条件、降序、分页排列
+     *  springboot集成spring data jpa  之  JPASpecificationExecutor的条件/排序/分页 查询
+     */
+    @Test
+    public void testSpecificationPageOrderBy(){
+        //排序
+        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        //分页的定义---发现可以传入排序
+        Pageable pageable = new PageRequest(0,2,sort);
+        //条件
+        Specification<StudentJpa> spec = new Specification<StudentJpa>() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return  criteriaBuilder.like(root.get("name").as(String.class),"王%");
+            }
+        };
+        Page<StudentJpa> page = this.studentJPASpecificationExecutor.findAll(spec,pageable);
+        for (StudentJpa studentJpa : page.getContent()){
+            System.out.println(studentJpa);
+        }
+    }
+
+    /**
+     * 自定义Repository
+     */
+    @Test
+    public void testDefineRepository(){
+        System.out.println("自定义repository接口：");
+        StudentJpa studentJpaById = studentJpaDefineDao.findStudentJpaById(5);
+        System.out.println(studentJpaById);
+    }
 
     /**
      * spring data jpa的一对多关系的保存
