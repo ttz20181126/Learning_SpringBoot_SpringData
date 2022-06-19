@@ -773,5 +773,23 @@ JPASpecificationExecutor接口:
      执行查询的时候，发现报错，找不到session，因为在查询时候，查询一方，session关闭，需要@ManyToMany添加fetch = FetchType.EAGER；  
      测试方法详情见:ApplicationTests.testManyToManySave(); ApplicationTests.testManyToManyFind()方法；  
     
-13.
+13.Spring整合spring data redis  
+13.1 spring data redis的介绍  
+
+13.2 reids的安装  
+
+13.3 spring整合spring data redis创建项目  
+
+13.4 spring整合spring data redis整合配置   
+redis.properties:
+   ~~~
+    redis.pool.maxtTotal=20
+    redis.pool.maxIdle=10
+    redis.pool.minIdle=5
+    
+    redis.hostname=192.168.70.129
+    redis.port=6379
+   ~~~
+     
+
    
