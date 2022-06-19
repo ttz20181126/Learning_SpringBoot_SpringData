@@ -773,13 +773,19 @@ JPASpecificationExecutor接口:
      执行查询的时候，发现报错，找不到session，因为在查询时候，查询一方，session关闭，需要@ManyToMany添加fetch = FetchType.EAGER；  
      测试方法详情见:ApplicationTests.testManyToManySave(); ApplicationTests.testManyToManyFind()方法；  
     
-13.Spring整合spring data redis  
-13.1 spring data redis的介绍  
-
-13.2 reids的安装  
-
-13.3 spring整合spring data redis创建项目  
-
+13.Spring集成Spring data redis   
+13.1 spring data redis介绍  
+     官网：spring.io--product--Spring Data Redis, part of the larger Spring Data family, 
+provides easy configuration and access to Redis from Spring applications. 
+It offers both low-level and high-level abstractions for interacting with the store,
+freeing the user from infrastructural concerns.提供了spring应用访问redis的简单配置。   
+13.2 redis安装   
+     redis.conf修改daemorize yes，启动为./redis-server redis.conf  
+13.3 spring整合spring data redis创建项目
+     spring项目中，application.context.xml添加：  
+   ~~~  
+     <contxt:property-placeholder location："classpath:redis.properties"/>
+   ~~~
 13.4 spring整合spring data redis整合配置   
 redis.properties:
    ~~~
@@ -790,6 +796,40 @@ redis.properties:
     redis.hostname=192.168.70.129
     redis.port=6379
    ~~~
-     
+application-context.xml
+  ~~~
+  	<!-- 配置读取properties文件的工具类 -->
+	<context:property-placeholder location="classpath:redis.properties"/>
+	
+	<!-- Jedis连接池 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${redis.pool.maxtTotal}"/>
+		<property name="maxIdle" value="${redis.pool.maxtIdle}"/>
+		<property name="minIdle" value="${redis.pool.minIdle}"/>
+	</bean>
+	
+	<!-- Jedis连接工厂:创建Jedis对象的工厂 -->
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<!-- IP地址 -->
+		<property name="hostName" value="${redis.hostname}"/>
+		<!-- 端口 -->
+		<property name="port" value="${redis.port}"/>
+		<!-- 连接池 -->
+		<property name="poolConfig" ref="poolConfig"/>
+	</bean>
+	
+	<!-- Redis模板对象:是SpringDataRedis提供的用户操作Redis的对象 -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+	<!-- 默认的序列化器：序列化器就是根据规则将存储的数据中的key与value做字符串的序列化处理 -->
+	<!-- keySerializer、valueSerializer：对应的是Redis中的String类型 -->
+	<!-- hashKeySerializer、hashValueSerializer：对应的是Redis中的Hash类型 -->
+	<property name="keySerializer">
+		<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+	</property>
+	<property name="valueSerializer">
+	    <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
+	</property>
+  ~~~
+13.5 测试整合
 
    
