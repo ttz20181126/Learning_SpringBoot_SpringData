@@ -830,6 +830,64 @@ application-context.xml
 	    <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
 	</property>
   ~~~
-13.5 测试整合
+13.5 测试整合   
+添加junit的架包，   
+测试代码：   
+   ~~~
+   @RunWith(SpringJUnit4ClassRunner.class)
+   @ContextConfiguration("classpath:application-context.xml")
+   public class RedisTest{
+        @Autowired
+        private RedisTemplate<String,Object> redisTemplate;
+        
+        @Test
+        public void testSpringDateRedis(){
+            //添加一个字符串
+            this.redisTemplate.opsForValue().set("key","getech");
+    
+            //获取
+            String value = (String)this.redisTemplate.opsForValue().get("key");
+            System.out.println("redis-value:" + value);
+        }
+   }
+   ~~~
+13.6 存取实体对象  
+  ~~~
+   @Test
+    public void testSetObject(){
+        User user = new User();
+        user.setUserId(1);
+        user.setUserAge(18);
+        user.setUserName("王五");
+        //重新设置序列化器,否则:com.learn.springboot.pojo.User cannot be cast to java.lang.String
+        this.redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        this.redisTemplate.opsForValue().set("user",user);
+
+        //如果在另外方法取值，要设置序列化器，以相同的序列化拿
+        User value = (User)this.redisTemplate.opsForValue().get("user");
+        System.out.println(value);
+    }
+  ~~~
+注意使用序列化时，User需要实现Serializable接口。  
+上述application-context.xml中配置了键值对使用String的序列化器，这儿存储对象要设置。  
+13.6 以json格式存储实体对象   
+使用json，导入相关json架包，  
+代码：  
+  ~~~
+   @Test
+    public void testSetJsonObject(){
+        User user = new User();
+        user.setUserId(2);
+        user.setUserAge(18);
+        user.setUserName("王Json五");
+
+        this.redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(User.class));
+        this.redisTemplate.opsForValue().set("user2",user);
+
+        User value = (User)this.redisTemplate.opsForValue().get("user2");
+        System.out.println(value);
+
+    }
+  ~~~
 
    
