@@ -1,5 +1,6 @@
 package com.learn.springboot.service.impl;
 
+import com.learn.springboot.pojo.Student;
 import com.learn.springboot.pojo.StudentJpa;
 import com.learn.springboot.service.StudentJpaEhcacheService;
 import com.learn.springboot.service.StudentJpaRepository;
@@ -20,6 +21,8 @@ public class StudentJpaEhcacheServiceImpl implements StudentJpaEhcacheService {
     @Autowired
     private StudentJpaRepository studentJpaRepository;
 
+    //@Autowired
+    //private Student student;
 
     @Override
     @Cacheable(value = "defineBySelf")

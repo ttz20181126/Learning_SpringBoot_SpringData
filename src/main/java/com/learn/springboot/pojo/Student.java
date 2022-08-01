@@ -1,6 +1,8 @@
 package com.learn.springboot.pojo;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.stereotype.Component;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -8,6 +10,7 @@ import javax.validation.constraints.NotNull;
 /**
 ** springboot 数据校验
  */
+//@Component
 public class Student {
 
     private Integer id;
@@ -49,7 +52,9 @@ public class Student {
         this.age = age;
     }
 
-    public Student(){}
+    public Student(){
+        System.out.println("构造方法被调用");
+    }
 
     public Student(Integer id, @NotBlank(message = "用户名不能为空（默认值是：不能为空）") @Length(min = 2, max = 6, message = "最小长度为2,最大长度为6") String name, @NotNull @Min(value = 12) Integer age) {
         this.id = id;
