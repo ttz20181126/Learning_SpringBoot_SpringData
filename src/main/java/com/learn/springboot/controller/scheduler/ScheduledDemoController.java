@@ -16,11 +16,11 @@ public class ScheduledDemoController {
      * @Scheduled 设置定时任务
      * (cron = "")  定时任务触发是时间的一个字符串表达式
      * cron表达式分6个域分别代表： 秒  分  时 日  月  星期
-     * 0/2 表示步长，从0开始，每隔2秒
+     * 0/30 表示步长，从0开始，每隔30秒
      * 2 12 * * * * 每小时的12点的2秒
      * ？就是占位，舍弃这个值。     *标识任意
      */
-    @Scheduled(cron = "0/2 * * *  * ?")
+    @Scheduled(cron = "0/30 * * *  * ?")
     public void scheduledMethod(){
         System.out.println("定时任务触发:" + new Date());
     }

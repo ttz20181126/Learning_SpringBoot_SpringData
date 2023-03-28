@@ -19,6 +19,6 @@ public class QuartzDemo implements Job {
         System.out.println("Quartz定时任务方法触发: " + new Date());
 
         //启动报错。QuartzConfig类中关联job对象factoryBean.setJobClass(QuartzDemo.class);利用的反射，这时候QuartzDemo不在spring容器中，无法注入studentService。
-        studentService.addStudent(new Student("王八蛋",18));
+        studentService.virtualAddStudent(new Student("王八蛋",18));
     }
 }

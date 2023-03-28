@@ -26,6 +26,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public void virtualAddStudent(Student student) {
+        System.out.println("===================virtualAddStudent===================");
+    }
+
+
+    @Override
     public List<Student> findStudentAll() {
         return this.studentMapper.selectStudentAll();
     }

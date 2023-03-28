@@ -12,6 +12,8 @@ public interface StudentService {
      */
     void addStudent(Student student);
 
+    void virtualAddStudent(Student student);
+
     /**
      * 查询用户列表
      * @return
