@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * springboot集成servlet方式二
+ * Application2.java中实例化这个servlet
  */
 public class SecondServlet  extends HttpServlet {
 
