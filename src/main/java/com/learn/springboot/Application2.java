@@ -4,6 +4,8 @@ package com.learn.springboot;
 import com.learn.springboot.filter.SecondFilter;
 import com.learn.springboot.listener.SecondListener;
 import com.learn.springboot.servlet.SecondServlet;
+import com.learn.springboot.servlet.SessionServlet;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -28,6 +30,15 @@ public class Application2 {
         ServletRegistrationBean<Servlet> bean = new ServletRegistrationBean<>(new SecondServlet());
         System.out.println("~~~~注册servlet~~~");
         bean.addUrlMappings("/secondServlet");
+        return bean;
+
+    }
+
+    @Bean
+    public ServletRegistrationBean<Servlet> getServletRegistrationBean2(){
+        ServletRegistrationBean<Servlet> bean = new ServletRegistrationBean<>(new SessionServlet());
+        System.out.println("~~~~注册servlet2~~~");
+        bean.addUrlMappings("/sessionServlet");
         return bean;
 
     }
@@ -60,5 +71,9 @@ public class Application2 {
     public ServletListenerRegistrationBean<SecondListener> getListenRegistrationBean(){
         ServletListenerRegistrationBean<SecondListener> bean = new ServletListenerRegistrationBean<SecondListener>(new SecondListener());
         return bean;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 }
